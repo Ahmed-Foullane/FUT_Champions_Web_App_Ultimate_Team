@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d2d2d2;
+} 
+
+.container {
+  perspective: 500px; /* Defines the 3D perspective */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(1.2);
+}
+
+.pitch {
+    height: 610px;
+    transform: rotateX(30deg);
+    margin-bottom: 150px;
+    border: 1px solid #000000;
+
+    cursor: pointer;
+    background-image: url("./assets/img/scorebord.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 42%;
+}
+
+.element{
+margin-bottom: 3px;
+}
+
+
+.item {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.player {
+width: 70%; 
+height: 108%; 
+background-image: url("./assets/img/card.webp");
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover; 
+}
+
+.element.a .player{
+margin-top: -35px;
+
+}
+.element.b .player{
+margin-top: -55px;
+
+}
+.element.c .player{
+margin-top: -85px;
+
+}
+.element.d .player{
+margin-top: -105px;
+
+}
+
+.player-infos{
+display: flex;
+height: 90%;
+padding-top: 5px;
+}
+
+.player-img{
+width: 50%;
+}
+
+.player-name{
+font-size: 0.8em;
+color: wheat;
+}
+
+.player-country-img{
+width: 20px;
+}
+
+
+
+@media(max-width: 1024px){
+.pitch{
+  width: 60%;
+}
+}
+@media(max-width: 500px){
+.pitch{
+  width: 70%;
+}
+}
