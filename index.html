@@ -6,158 +6,150 @@
     <title>3D Rotated Football Pitch</title>
     <link rel="stylesheet" href="./src/style.css" />
     <link rel="stylesheet" href="./src/output.css" />
+
   </head>
   <body>
-    <div class="parent h-[100vh] w-[100%] flex items-center justify-start">
+    <div style="display: none;" class="container  add-new-plaer-form h-[600px]  absolute top-[5%] flex flex-col  z-50">
+      <h2 class="text-2xl font-bold ">Add New Player</h2>
+      <form id="playerForm" class="bg-white rounded px-8 pt-6  ">
+          <div >
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="playerName">
+                  Player Name
+              </label>
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerName" type="text" placeholder="Enter player name" required>
+          </div>
+          
+          <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPosition">
+                  Position
+              </label>
+              <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPosition" required>
+                  <option value="">Select Position</option>
+                  <option value="GK">Goalkeeper</option>
+                  <option value="DEF">Defender</option>
+                  <option value="MID">Midfielder</option>
+                  <option value="FWD">Forward</option>
+              </select>
+          </div>
+
+          <div id="labelPlyaer" class="grid grid-cols-2 gap-4 mb-4">
+              <div id="paceContainer">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPace">
+                      Pace/Diving
+                  </label>
+                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPace" type="number" min="1" max="99" required>
+              </div>
+              <div id="shootingContainer">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerShooting">
+                      Shooting/Handling
+                  </label>
+                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerShooting" type="number" min="1" max="99" required>
+              </div>
+              <div id="passingContainer">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPassing">
+                      Passing/Kicking
+                  </label>
+                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPassing" type="number" min="1" max="99" required>
+              </div>
+              <div id="dribblingContainer">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerDribbling">
+                      Dribbling/Reflexes
+                  </label>
+                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDribbling" type="number" min="1" max="99" required>
+              </div>
+              <div id="defendingContainer">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerDefending">
+                      Defending/Speed
+                  </label>
+                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDefending" type="number" min="1" max="99" required>
+              </div>
+              <div id="physicalContainer">
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPhysical">
+                      Physical/Positioning
+                  </label>
+                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPhysical" type="number" min="1" max="99" required>
+              </div>
+          </div>
+
+          <div class="mb-4">
+              <label class="block text-gray-700 text-sm font-bold mb-2" for="playerRating">
+                  Overall Rating
+              </label>
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerRating" type="number" min="1" max="99" required>
+          </div>
+
+          <div class="grid grid-cols-3 gap-4 mb-4">
+              <div>
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerFlag">
+                      Country Flag
+                  </label>
+                  <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="playerFlag" type="file" >
+              </div>
+              <div>
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerLogo">
+                      Club Logo
+                  </label>
+                  <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="playerLogo" type="file" >
+              </div>
+              <div>
+                  <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPhoto">
+                      Player Photo
+                  </label>
+                  <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="playerPhoto" type="file"  required>
+              </div>
+          </div>
+
+          <div class="flex items-center  ">
+              <button class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
+                  Add Player
+              </button>
+              <button onclick="showForm(false)" class="hide-form bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
+                  cancle
+              </button>
+          </div>
+      </form>
+  </div>
+
+
+    
+    <div class="parent h-[100vh]  flex items-center justify-center ">
+     
       <div class="container">
+        <div class="pp"></div>
         <div class="pitch">
           <div class="case h-[100%]">
-            <div class="element e h-[20%]  flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]">
-               
-              </div>
-              <div class="item item2 h-[100%] w-[20%]"></div>
-              <div class="item item3 h-[100%] w-[20%]">
-               
-              </div>
-              <div class="item item4 h-[100%] w-[20%]"></div>
-              <div class="item item5 h-[100%] w-[20%]">
-                
-              </div>
-            </div>
-            <div class="element d h-[20%]  flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="item item2 h-[100%] w-[20%]">
-               
-              </div>
-              <div class="item item3 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="item item4 h-[100%] w-[20%]">
-               
-              </div>
-              <div class="item item5 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="element c h-[20%]  flex gap-1">
+            <div class="element e h-[20%] flex gap-1">
               <div class="item item1 h-[100%] w-[20%]"></div>
-              <div class="item item2 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="item item3 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="item item4 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
+              <div class="item item2 h-[100%] w-[20%]"></div>
+              <div class="item item3 h-[100%] w-[20%]"></div>
+              <div class="item item4 h-[100%] w-[20%]"></div>
               <div class="item item5 h-[100%] w-[20%]"></div>
             </div>
-            <div class="element b h-[20%]  flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="item item2 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="item item3 h-[100%] w-[20%]"></div>
-              <div class="item item4 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-              <div class="item item5 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos">
-                    <p style="color: wheat"></p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="element a h-[20%]  flex gap-1">
+            <div class="element d h-[20%] flex gap-1">
               <div class="item item1 h-[100%] w-[20%]"></div>
               <div class="item item2 h-[100%] w-[20%]"></div>
-              <div class="item item3 h-[100%] w-[20%]">
-                <div class="player">
-                  <div class="player-infos flex flex-col items-center">
-                    <div class="flex justify-start ml-2 ">
-                      <span class="stat-label flex flex-col  mt-1  font-light text-[#f5deb3]">
-                        <p>90 <br>cf</p>
-                        
-                      </span>
-                      <img class="player-img " src="./src/assets/img/players/bouno.png" alt="">
-                    </div>
-                    <p class="player-name">bouno</p>
-                    <div class="player-details flex w-[100%] px-1 justify-between" >
-                      <div class="stat-row flex flex-col ">
-                        <span class="stat-label text-[0.4em] font-thin text-white">PAC</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">80</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">SHO</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">87</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">PAS</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">90</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">DRI</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">94</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">DEF</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">33</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">PHY</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">64</span>
-                      </div>
-                    </div>
-                    <div class="flex w-[60%] justify-between">
-
-                      <img class="player-country-img rounded-full" src="./src/assets/img/countries/morooco.png" alt="">
-                      <img class="player-country-img rounded-full" src="./src/assets/img/clubs/Al-Hilal-Logo.png" alt="">
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div class="item item3 h-[100%] w-[20%]"></div>
+              <div class="item item4 h-[100%] w-[20%]"></div>
+              <div class="item item5 h-[100%] w-[20%]"></div>
+            </div>
+            <div class="element c h-[20%] flex gap-1">
+              <div class="item item1 h-[100%] w-[20%]"></div>
+              <div class="item item2 h-[100%] w-[20%]"></div>
+              <div class="item item3 h-[100%] w-[20%]"></div>
+              <div class="item item4 h-[100%] w-[20%]"></div>
+              <div class="item item5 h-[100%] w-[20%]"></div>
+            </div>
+            <div class="element b h-[20%] flex gap-1">
+              <div class="item item1 h-[100%] w-[20%]"></div>
+              <div class="item item2 h-[100%] w-[20%]"></div>
+              <div class="item item3 h-[100%] w-[20%]"></div>
+              <div class="item item4 h-[100%] w-[20%]"></div>
+              <div class="item item5 h-[100%] w-[20%]"></div>
+            </div>
+            <div class="element a h-[20%] flex gap-1">
+              <div class="item item1 h-[100%] w-[20%]"></div>
+              <div class="item item2 h-[100%] w-[20%]"></div>
+              <div id="a3" class="item item3 h-[100%] w-[20%]"></div>
               <div class="item item4 h-[100%] w-[20%]"></div>
               <div class="item item5 h-[100%] w-[20%]"></div>
             </div>
@@ -166,5 +158,14 @@
         </div>
       </div>
     </div>
+    <div class="side-bar w-[45%] h-[100%] bg-[#fffafa]">
+      <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
+        Add Player
+    </button>
+      
+    </div>
+    <script src="script.Js">
+      
+    </script>
   </body>
 </html>
