@@ -9,6 +9,196 @@ let form = document.querySelector(".add-new-plaer-form ");
 
 let positionSelect = document.getElementById("playerPosition");
 
+let formations = [{
+  DEF: [0,1,3,4],
+  MID: [1,2,3],
+  FWD: [0,2,4],
+}]
+let gk = {
+  name: "Gianluigi Donnarumma",
+  photo: "https://cdn.sofifa.net/players/230/621/25_120.png",
+  position: "GK",
+  nationality: "Italy",
+  flag: "https://cdn.sofifa.net/flags/it.png",
+  club: "Paris Saint-Germain",
+  logo: "https://cdn.sofifa.net/meta/team/591/120.png",
+  rating: 89,
+  diving: 88,
+  handling: 84,
+  kicking: 75,
+  reflexes: 90,
+  speed: 50,
+  positioning: 85
+}
+let def = [
+  {
+    name: "Antonio Rudiger",
+    photo: "https://cdn.sofifa.net/players/205/452/25_120.png",
+    position: "CB",
+    nationality: "Germany",
+    flag: "https://cdn.sofifa.net/flags/de.png",
+    club: "Real Madrid",
+    logo: "https://cdn.sofifa.net/meta/team/3468/120.png",
+    rating: 88,
+    pace: 82,
+    shooting: 55,
+    passing: 73,
+    dribbling: 70,
+    defending: 86,
+    physical: 86
+  },
+  {
+    name: "Alphonso Davies",
+    photo: "https://cdn.sofifa.net/players/234/396/25_120.png",
+    position: "LB",
+    nationality: "Canada",
+    flag: "https://cdn.sofifa.net/flags/ca.png",
+    club: "Bayern Munich",
+    logo: "https://cdn.sofifa.net/meta/team/503/120.png",
+    rating: 84,
+    pace: 96,
+    shooting: 68,
+    passing: 77,
+    dribbling: 82,
+    defending: 76,
+    physical: 77
+  },
+  {
+    name: "Trent Alexander-Arnold",
+    photo: "https://cdn.sofifa.net/players/231/281/25_120.png",
+    position: "RB",
+    nationality: "England",
+    flag: "https://cdn.sofifa.net/flags/gb-eng.png",
+    club: "Liverpool",
+    rating: 87,
+    pace: 76,
+    shooting: 66,
+    passing: 89,
+    dribbling: 80,
+    defending: 79,
+    physical: 71
+  },
+  {
+    name: "Noussair Mazraoui",
+    photo: "https://cdn.sofifa.net/players/236/401/25_120.png",
+    position: "LB",
+    nationality: "Morocco",
+    flag: "https://cdn.sofifa.net/flags/ma.png",
+    club: "Manchester United",
+    logo: "https://cdn.sofifa.net/meta/team/14/120.png",
+    rating: 81,
+    pace: 78,
+    shooting: 66,
+    passing: 77,
+    dribbling: 83,
+    defending: 77,
+    physical: 71
+  }
+];
+
+let mid =[
+  {
+    name: "Joshua Kimmich",
+    photo: "https://cdn.sofifa.net/players/212/622/25_120.png",
+    position: "CM",
+    nationality: "Germany",
+    flag: "https://cdn.sofifa.net/flags/de.png",
+    club: "Bayern Munich",
+    logo: "https://cdn.sofifa.net/meta/team/503/120.png",
+    rating: 89,
+    pace: 70,
+    shooting: 75,
+    passing: 88,
+    dribbling: 84,
+    defending: 84,
+    physical: 81
+  },
+  {
+    name: "N'Golo Kanté",
+    photo: "https://cdn.sofifa.net/players/215/914/25_120.png",
+    position: "CDM",
+    nationality: "France",
+    flag: "https://cdn.sofifa.net/flags/fr.png",
+    club: "Al-Ittihad",
+    logo: "https://cdn.sofifa.net/meta/team/476/120.png",
+    rating: 87,
+    pace: 77,
+    shooting: 66,
+    passing: 75,
+    dribbling: 82,
+    defending: 88,
+    physical: 82
+  },
+  {
+    name: "Ismael Saibari",
+    photo: "https://cdn.sofifa.net/players/259/480/25_120.png",
+    position: "CM",
+    nationality: "Morocco",
+    flag: "https://cdn.sofifa.net/flags/ma.png",
+    club: "PSV",
+    logo: "https://cdn.sofifa.net/meta/team/682/120.png",
+    rating: 83,
+    pace: 89,
+    shooting: 78,
+    passing: 80,
+    dribbling: 86,
+    defending: 55,
+    physical: 84
+  }
+];
+
+let fwd = [
+  {
+    name: "Erling Haaland",
+    photo: "https://cdn.sofifa.net/players/239/085/25_120.png",
+    position: "ST",
+    nationality: "Norway",
+    flag: "https://cdn.sofifa.net/flags/no.png",
+    club: "Manchester City",
+    logo: "https://cdn.sofifa.net/players/239/085/25_120.png",
+    rating: 91,
+    pace: 89,
+    shooting: 94,
+    passing: 65,
+    dribbling: 80,
+    defending: 45,
+    physical: 88
+  },
+  {
+    name: "Jadon Sancho",
+    photo: "https://cdn.sofifa.net/players/233/049/25_120.png",
+    position: "LW",
+    nationality: "England",
+    flag: "https://cdn.sofifa.net/flags/gb-eng.png",
+    club: "Manchester United",
+    logo: "https://cdn.sofifa.net/meta/team/14/120.png",
+    rating: 84,
+    pace: 85,
+    shooting: 74,
+    passing: 78,
+    dribbling: 88,
+    defending: 34,
+    physical: 63
+  },
+  {
+    name: "Youssef En-Nesyri",
+    photo: "https://cdn.sofifa.net/players/235/410/25_120.png",
+    position: "ST",
+    nationality: "Morocco",
+    flag: "https://cdn.sofifa.net/flags/ma.png",
+    club: "Fenerbahçe",
+    logo: "https://cdn.sofifa.net/meta/team/88/120.png",
+    rating: 83,
+    pace: 82,
+    shooting: 82,
+    passing: 63,
+    dribbling: 77,
+    defending: 36,
+    physical: 80
+  }
+];
+
+
 function showForm(show) {
   show ? (form.style.display = "flex") : (form.style.display = "none");
 }
@@ -42,10 +232,6 @@ async function getData() {
   let allPlayers = JSON.parse(localStorage.getItem("players"));
   let isGoalKeeper = false;
 
-  let GK = {}
-  let DEF = []
-  let MID = []
-  let FWD = []
 
   document.getElementById("playerForm").addEventListener("submit", function (event) {
       event.preventDefault(); // Prevent form submission
@@ -171,26 +357,43 @@ async function getData() {
   }
 
 
+  for (let i = 0; i < formations[0].MID.length; i++) {
+    
+      middle[formations[0].MID[i]].innerHTML = createPlayerCard(mid[i]);
+    
+  }
   
-  goalKeeper.innerHTML = createPlayerCard(players[25]);
-  defence[0].innerHTML = createPlayerCard(players[10]);
-  defence[1].innerHTML = createPlayerCard(players[11]);
-  defence[3].innerHTML = createPlayerCard(players[12]);
-  defence[4].innerHTML = createPlayerCard(players[13]);
-  middle[1].innerHTML = createPlayerCard(players[3]);
-  middle[2].innerHTML = createPlayerCard(players[8]);
-  middle[3].innerHTML = createPlayerCard(players[5]);
-  attack[0].innerHTML = createPlayerCard(players[1]);
-  attack[2].innerHTML = createPlayerCard(players[7]);
-  attack[4].innerHTML = createPlayerCard(players[0]);
+  // Loop for FWD players
+  for (let i = 0; i < formations[0].FWD.length; i++) {
+    
+      attack[formations[0].FWD[i]].innerHTML = createPlayerCard(fwd[i]);
+    
+  }
+  
+  // Loop for DEF players
+  for (let i = 0; i < formations[0].DEF.length; i++) {
+    
+      defence[formations[0].DEF[i]].innerHTML = createPlayerCard(def[i]);
+    
+  }
+  
 
   function addPlayerToSideBar(players) {
     // Clear the sidebar content to prevent duplicates
     sideBar.innerHTML = `
-        <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
-        Add Player
-    </button>`;
-
+    <div class="flex items-center p-4"> 
+    <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " type="submit">
+    Add Player
+    </button>
+    <form class="w-[80%] mx-auto">
+    <select id="formations" class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[100%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option selected>formations</option>
+    <option value="US">4-3-3 </option>
+    <option value="CA">4-4-2</option>
+    </select>
+    </form>
+    </div>
+`
     players.forEach((player, i) => {
       let isGoalKeeper = player.position === "GK";
 
