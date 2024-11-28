@@ -12,44 +12,77 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-
+ 
+  
 }
+
+
 
 .pitch {
   height: 610px;
   margin-bottom: 100px;
-}
-
-.parent{
-  transform: rotateX(30deg);
+  position: absolute;
+  left: 3%;
   background-image: url("./assets/img/scorebord.png");
   cursor: pointer;
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center;}
+
+.parent{
+  transform: rotateX(30deg);
   width: 100%;
-} 
+}
 
+.dragging{
+  opacity: 0.5;
+}
 
+.target{
+  background-color: blue;
+}
 
-
+.target .player{
+  background-color: red;
+}
 .item {
 display: flex;
 align-items: center;
 justify-content: center;
+width: 125px;
+}
+/* Style for the dragging player */
+.player.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+/* Style for the drag-over target */
+.item.drag-over {
+  background-color: rgba(0, 128, 255, 0.2);
+  border: 2px dashed #0080ff;
+  transition: all 0.3s ease;
+}
+
+/* Reset styles when drag operation ends */
+.item:not(.drag-over) {
+  background-color: transparent;
+  border: none;
+  transition: all 0.3s ease;
 }
 
 .player {
-width: 100%;
-height: 140%;
+width: 120px;
+height: 150%;
 display: flex;
 align-items: center;
 background-image: url("assets/img/card.webp");
 background-position: center;
 background-repeat: no-repeat;
 background-size: cover; 
+z-index: 199;
 }
 
 .element.a .player{
@@ -92,15 +125,25 @@ width: 20px;
 
 .side-bar{
   overflow-y: scroll;
+  transition: 0.4s ease;
+  position: absolute;
+  right: 0;
+  width: 40%;
+}
+.draging{
+  /* opacity: 0.4; */
 }
 
 
 @media(max-width: 1068px){
-.side-bar{
-  /* width: 0; */
-}
+  .side-bar{
+    width: 0%;
+  }
+
 
 }
 @media(max-width: 500px){
 
 } 
+
+/* to do add responsive for tablet */

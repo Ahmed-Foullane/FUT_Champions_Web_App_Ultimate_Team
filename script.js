@@ -1,18 +1,25 @@
 // Load players data
-localStorage.clear()
+// localStorage.clear()
 let goalKeeper = document.getElementById("a3");
 let defence = document.querySelectorAll(".b .item");
 let middle = document.querySelectorAll(".c .item");
+
 let attack = document.querySelectorAll(".d .item");
 let sideBar = document.querySelector(".side-bar");
 let form = document.querySelector(".add-new-plaer-form ");
-
+let isGoalKeeper = false;
 let positionSelect = document.getElementById("playerPosition");
-
+let playersContainerDev = document.querySelector('.pitch')
+let userSelectedFormationOption = 1
 let formations = [{
   DEF: [0,1,3,4],
   MID: [1,2,3],
   FWD: [0,2,4],
+},
+{
+  DEF: [0,1,3,4],
+  MID: [0,1,3,4],
+  FWD: [1,3],
 }]
 let gk = {
   name: "Gianluigi Donnarumma",
@@ -230,7 +237,7 @@ async function getData() {
     localStorage.setItem("players", JSON.stringify(players));
   }
   let allPlayers = JSON.parse(localStorage.getItem("players"));
-  let isGoalKeeper = false;
+  
 
 
   document.getElementById("playerForm").addEventListener("submit", function (event) {
@@ -276,106 +283,7 @@ async function getData() {
       addPlayerToSideBar(JSON.parse(localStorage.getItem("players")));
       showForm(false);
     });
-  function createPlayerCard(player) {
-    if (player.position == "GK") {
-      isGoalKeeper = true;
-    } else {
-      isGoalKeeper = false;
-    }
 
-    return `
-      <div draggable="true"  class="player">
-                  <div class="player-infos flex flex-col items-center">
-                    <div class="flex justify-start ml-2 ">
-                      <span class="stat-label mt-1 ml-[-3px]  font-light text-[#f5deb3]">
-                       <span>${player?.rating}<br>${player.position}</span> 
-                      </span>
-                      <img class="player-img " src=${player.photo} alt="">
-                    </div>  
-                    <p class="player-name">${player.name}</p>
-                    <div class="player-details flex w-[100%] px-1 justify-between" >
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">${
-                          isGoalKeeper ? "DIV" : "PAC"
-                        }</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
-                          player?.pace || player.diving
-                        }</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">${
-                          isGoalKeeper ? "HAN" : "SHO"
-                        }</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
-                          player?.shooting || player?.handling
-                        }</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">${
-                          isGoalKeeper ? "KIC" : "PAS"
-                        }</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
-                          player?.passing || player?.kicking
-                        }</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">${
-                          isGoalKeeper ? "FEF" : "DRI"
-                        }</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
-                          player?.dribbling || player?.reflexes
-                        }</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">${
-                          isGoalKeeper ? "SPD" : "DEF"
-                        }</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
-                          player?.defending || player?.speed
-                        }</span>
-                      </div>
-                      <div class="stat-row flex flex-col">
-                        <span class="stat-label text-[0.4em] font-thin text-white">${
-                          isGoalKeeper ? "POS" : "PHY"
-                        }</span>
-                        <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
-                          player?.physical || player?.positioning
-                        }</span>
-                      </div>
-                    </div>
-                    <div class="flex w-[60%] justify-between">
-                      <img class="player-country-img rounded-full" src=${
-                        player.flag
-                      } alt="">
-                      <img class="player-country-img rounded-full" src=${
-                        player.logo
-                      } alt="">
-                    </div>
-                  </div>
-                </div>
-        `;
-  }
-
-
-  for (let i = 0; i < formations[0].MID.length; i++) {
-    
-      middle[formations[0].MID[i]].innerHTML = createPlayerCard(mid[i]);
-    
-  }
-  
-  // Loop for FWD players
-  for (let i = 0; i < formations[0].FWD.length; i++) {
-    
-      attack[formations[0].FWD[i]].innerHTML = createPlayerCard(fwd[i]);
-    
-  }
-  
-  // Loop for DEF players
-  for (let i = 0; i < formations[0].DEF.length; i++) {
-    
-      defence[formations[0].DEF[i]].innerHTML = createPlayerCard(def[i]);
-    
-  }
   
 
   function addPlayerToSideBar(players) {
@@ -385,13 +293,7 @@ async function getData() {
     <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " type="submit">
     Add Player
     </button>
-    <form class="w-[80%] mx-auto">
-    <select id="formations" class="bg-gray-50  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-[100%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    <option selected>formations</option>
-    <option value="US">4-3-3 </option>
-    <option value="CA">4-4-2</option>
-    </select>
-    </form>
+   
     </div>
 `
     players.forEach((player, i) => {
@@ -483,10 +385,191 @@ async function getData() {
 
 getData();
 
+function createPlayerCard(player) {
+  if (player.position == "GK") {
+    isGoalKeeper = true;
+  } else {
+    isGoalKeeper = false;
+  }
+  return `
+    <div draggable="true"  class="player">
+                <div class="player-infos flex flex-col items-center">
+                  <div class="flex justify-start ml-2 ">
+                    <span class="stat-label mt-1 ml-[-3px]  font-light text-[#f5deb3]">
+                     <span>${player?.rating}<br>${player.position}</span> 
+                    </span>
+                    <img class="player-img " src=${player.photo} alt="">
+                  </div>  
+                  <p class="player-name">${player.name}</p>
+                  <div class="player-details flex w-[100%] px-1 justify-between" >
+                    <div class="stat-row flex flex-col">
+                      <span class="stat-label text-[0.4em] font-thin text-white">${
+                        isGoalKeeper ? "DIV" : "PAC"
+                      }</span>
+                      <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
+                        player?.pace || player.diving
+                      }</span>
+                    </div>
+                    <div class="stat-row flex flex-col">
+                      <span class="stat-label text-[0.4em] font-thin text-white">${
+                        isGoalKeeper ? "HAN" : "SHO"
+                      }</span>
+                      <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
+                        player?.shooting || player?.handling
+                      }</span>
+                    </div>
+                    <div class="stat-row flex flex-col">
+                      <span class="stat-label text-[0.4em] font-thin text-white">${
+                        isGoalKeeper ? "KIC" : "PAS"
+                      }</span>
+                      <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
+                        player?.passing || player?.kicking
+                      }</span>
+                    </div>
+                    <div class="stat-row flex flex-col">
+                      <span class="stat-label text-[0.4em] font-thin text-white">${
+                        isGoalKeeper ? "FEF" : "DRI"
+                      }</span>
+                      <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
+                        player?.dribbling || player?.reflexes
+                      }</span>
+                    </div>
+                    <div class="stat-row flex flex-col">
+                      <span class="stat-label text-[0.4em] font-thin text-white">${
+                        isGoalKeeper ? "SPD" : "DEF"
+                      }</span>
+                      <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
+                        player?.defending || player?.speed
+                      }</span>
+                    </div>
+                    <div class="stat-row flex flex-col">
+                      <span class="stat-label text-[0.4em] font-thin text-white">${
+                        isGoalKeeper ? "POS" : "PHY"
+                      }</span>
+                      <span class="stat-value text-[0.6em] text-yellow-600 font-thin">${
+                        player?.physical || player?.positioning
+                      }</span>
+                    </div>
+                  </div>
+                  <div class="flex w-[60%] justify-between">
+                    <img class="player-country-img rounded-full" src=${
+                      player.flag
+                    } alt="">
+                    <img class="player-country-img rounded-full" src=${
+                      player.logo
+                    } alt="">
+                  </div>
+                </div>
+              </div>
+      `;
+}
+
+function showPlan() {
+  for (let i = 0; i < 4; i++) {
+    
+    middle[i].innerHTML = "" ;
+    attack[i].innerHTML = "";
+    defence[i].innerHTML = "";
+    
+  }
+
+  console.log(middle);
+  
+for (let i = 0; i < formations[userSelectedFormationOption - 1].MID.length; i++) {
+  
+  middle[formations[userSelectedFormationOption - 1].MID[i]].innerHTML = createPlayerCard(mid[i]);
+}
+
+// Loop for FWD players
+for (let i = 0; i < formations[userSelectedFormationOption - 1].FWD.length; i++) {
+    attack[formations[userSelectedFormationOption - 1].FWD[i]].innerHTML = createPlayerCard(fwd[i]);
+  
+}
+
+// Loop for DEF players
+for (let i = 0; i < formations[userSelectedFormationOption - 1].DEF.length; i++) {
+    defence[formations[userSelectedFormationOption - 1].DEF[i]].innerHTML = createPlayerCard(def[i]);
+  
+}
+goalKeeper.innerHTML = createPlayerCard(gk);
+}
+showPlan()
+
+
+
+
+
+
+// Function to create player card HTML
 function addPlayerToBoard(index) {
   let plyersLocalStorage = JSON.parse(localStorage.getItem("players"))
   console.log(plyersLocalStorage[index]);
   
 }
 
-// Function to create player card HTML
+
+playersContainerDev.addEventListener('dragstart', (e) => {
+  const player = e.target.closest('.placeholder');
+    player.classList.add('dragging');
+});
+
+playersContainerDev.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  const dropTarget = e.target.closest('.placeholder');
+ 
+    dropTarget.classList.add('drag-over');
+
+});
+
+playersContainerDev.addEventListener('dragleave', (e) => {
+  const dropTarget = e.target.closest('.placeholder');
+  
+    dropTarget.classList.remove('drag-over');
+  
+});
+
+playersContainerDev.addEventListener('drop', (e) => {
+  e.preventDefault();
+  
+  const draggedPlayer = document.querySelector('.dragging');
+  const dropTarget = e.target.closest('.placeholder');
+  
+    
+    // Check if dropping in the same position
+    if (draggedPlayer.closest('.placeholder') === dropTarget) {
+      // Just remove the styling classes without making any changes
+      draggedPlayer.classList.remove('dragging');
+      dropTarget.classList.remove('drag-over');
+      return;
+    }
+    
+    // If not in same position, proceed with the swap/move logic
+    if (dropTarget.innerHTML.trim() !== '') {
+      // Swap players
+      const targetPlayerHTML = dropTarget.innerHTML;
+      dropTarget.innerHTML = draggedPlayer.outerHTML;
+      draggedPlayer.closest('.placeholder').innerHTML = targetPlayerHTML;
+    } else {
+      // Move player
+      dropTarget.innerHTML = draggedPlayer.outerHTML;
+      draggedPlayer.closest('.placeholder').innerHTML = '';
+    }
+  
+
+  // Cleanup all drag-related classes
+  document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+});
+
+// Add dragstart and dragend event listeners to players
+document.querySelectorAll('.player').forEach(player => {
+  player.addEventListener('dragstart', (e) => {
+    e.target.closest('.player').classList.add('dragging');
+  });
+  
+  player.addEventListener('dragend', (e) => {
+    e.target.closest('.player').classList.remove('dragging');
+    // Remove drag-over class from all placeholders
+    document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+  });
+});
