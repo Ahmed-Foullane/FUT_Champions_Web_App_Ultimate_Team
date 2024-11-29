@@ -1,4 +1,3 @@
-localStorage.clear()
 
 let sideBar = document.querySelector(".side-bar");
 let form = document.querySelector(".add-new-plaer-form ");
