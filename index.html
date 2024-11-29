@@ -26,9 +26,9 @@
               <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPosition" required>
                   <option value="">Select Position</option>
                   <option value="GK">Goalkeeper</option>
-                  <option value="DEF">Defender</option>
-                  <option value="MID">Midfielder</option>
-                  <option value="FWD">Forward</option>
+                  <option value="ATT">Defender</option>
+                  <option value="ATT">Midfielder</option>
+                  <option value="ATT">Forward</option>
               </select>
           </div>
 
@@ -118,40 +118,41 @@
         <div class="pp"></div>
         <div class="pitch">
           <div class="case h-[100%]">
-            <div class="element e h-[20%] flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]"></div>
-              <div class="item item2 h-[100%] w-[20%]"></div>
-              <div class="item item3 h-[100%] w-[20%]"></div>
-              <div class="item item4 h-[100%] w-[20%]"></div>
-              <div class="item item5 h-[100%] w-[20%]"></div>
-            </div>
+              <div class="element e h-[20%] flex gap-1">
+                  <div class="item  h-[100%]"></div>
+                  <div class="item item2 h-[100%]"></div>
+                  <div class="item item3 h-[100%]"></div>
+                  <div class="item item4 h-[100%]"></div>
+                  <div class="item item5 h-[100%]"></div>
+                </div>
             <div class="element d h-[20%] flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]"></div>
-              <div class="item item2 h-[100%] w-[20%]"></div>
-              <div class="item item3 h-[100%] w-[20%]"></div>
-              <div class="item item4 h-[100%] w-[20%]"></div>
-              <div class="item item5 h-[100%] w-[20%]"></div>
+              <div class="item item1 placeholder h-[100%]"></div>
+              <div class="item item2 placeholder h-[100%]"></div>
+              <div class="item item3 placeholder h-[100%]"></div>
+              <div class="item item4 placeholder h-[100%]"></div>
+              <div class="item item5 placeholder h-[100%]"></div>
             </div>
+            
             <div class="element c h-[20%] flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]"></div>
-              <div class="item item2 h-[100%] w-[20%]"></div>
-              <div class="item item3 h-[100%] w-[20%]"></div>
-              <div class="item item4 h-[100%] w-[20%]"></div>
-              <div class="item item5 h-[100%] w-[20%]"></div>
+              <div class="item item1 placeholder h-[100%]"></div>
+              <div class="item item2 placeholder h-[100%]"></div>
+              <div class="item item3 placeholder h-[100%]"></div>
+              <div class="item item4 placeholder h-[100%]"></div>
+              <div class="item item5 placeholder h-[100%]"></div>
             </div>
             <div class="element b h-[20%] flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]"></div>
-              <div class="item item2 h-[100%] w-[20%]"></div>
-              <div class="item item3 h-[100%] w-[20%]"></div>
-              <div class="item item4 h-[100%] w-[20%]"></div>
-              <div class="item item5 h-[100%] w-[20%]"></div>
+              <div class="item item1 placeholder h-[100%]"></div>
+              <div class="item item2 placeholder h-[100%]"></div>
+              <div class="item item3 placeholder h-[100%]"></div>
+              <div class="item item4 placeholder h-[100%]"></div>
+              <div class="item item5 placeholder h-[100%]"></div>
             </div>
             <div class="element a h-[20%] flex gap-1">
-              <div class="item item1 h-[100%] w-[20%]"></div>
-              <div class="item item2 h-[100%] w-[20%]"></div>
-              <div id="a3" class="item item3 h-[100%] w-[20%]"></div>
-              <div class="item item4 h-[100%] w-[20%]"></div>
-              <div class="item item5 h-[100%] w-[20%]"></div>
+              <div class="item item1 placeholder h-[100%]"></div>
+              <div class="item item2 placeholder h-[100%]"></div>
+              <div id="a3" class="item item3 placeholder h-[100%]"></div>
+              <div class="item item4 placeholder h-[100%]"></div>
+              <div class="item item5 placeholder h-[100%]"></div>
             </div>
             <!-- now taht you knwo youw now how to typw itha ll tn fin -->
           </div>
@@ -159,9 +160,11 @@
       </div>
     </div>
     <div class="side-bar w-[45%] h-[100%] bg-[#fffafa]">
-      <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
-        Add Player
-    </button>
+        <div class="flex items-center p-4"> 
+            <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " type="submit">
+            Add Player
+            </button>
+           
       
     </div>
     <script src="script.Js">
