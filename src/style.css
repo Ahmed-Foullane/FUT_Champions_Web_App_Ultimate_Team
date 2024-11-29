@@ -130,6 +130,15 @@ width: 20px;
   margin-right: 6px;
 }
 
+.edit{
+  padding: 4px 6px;
+  background-color: orangered;
+  border-radius: 8px;
+  color: black;
+  float: inline-end;
+  margin-right: 6px;
+}
+
 .side-bar{
   overflow-y: scroll;
   z-index: 400;
