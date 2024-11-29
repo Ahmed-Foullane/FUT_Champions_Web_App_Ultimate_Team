@@ -9,19 +9,16 @@ function showForm(show) {
   show ? (form.style.display = "flex") : (form.style.display = "none");
 }
 
-// Define labels for each position
 let positionLabels = {
   GK: ["Diving", "Handling", "Kicking", "Reflexes", "Speed", "Positioning"],
   ATT: ["Pace", "Shooting", "Passing", "Dribbling", "Defending", "Physical"],
 };
 
-// Handle position change
 positionSelect.addEventListener("change", () => {
   let position = positionSelect.value;
   let labels = positionLabels[position];
  
   
-  // Update labels in the stats container
   document.querySelectorAll("#labelPlyaer label").forEach((label, index) => {
     label.innerHTML = labels[index];
   });
@@ -50,22 +47,39 @@ async function getData() {
       let photoUrl = photoInput ? URL.createObjectURL(photoInput) : null;
       let flagUrl = flagInput ? URL.createObjectURL(flagInput) : null;
       let logoUrl = logoInput ? URL.createObjectURL(logoInput) : null;
+      let playerData;
 
-      
-      let playerData = {
-        name: document.getElementById("playerName").value,
-        photo: photoUrl, 
-        position: document.getElementById("playerPosition").value,
-        flag: flagUrl, 
-        logo: logoUrl, 
-        rating: document.getElementById("playerRating").value, 
-        pace: document.getElementById("playerPace").value, 
-        shooting: document.getElementById("playerShooting").value, 
-        passing: document.getElementById("playerPassing").value, 
-        dribbling: document.getElementById("playerDribbling").value,
-        defending: document.getElementById("playerDefending").value,
-        physical: document.getElementById("playerPhysical").value, 
-      };
+      if (document.getElementById("playerPosition").value !== "GK") {
+         playerData = {
+          name: document.getElementById("playerName").value,
+          photo: photoUrl, 
+          position: document.getElementById("playerPosition").value,
+          flag: flagUrl, 
+          logo: logoUrl, 
+          rating: document.getElementById("playerRating").value, 
+          pace: document.getElementById("playerPace").value, 
+          shooting: document.getElementById("playerShooting").value, 
+          passing: document.getElementById("playerPassing").value, 
+          dribbling: document.getElementById("playerDribbling").value,
+          defending: document.getElementById("playerDefending").value,
+          physical: document.getElementById("playerPhysical").value, 
+        };
+      }else{
+          playerData = {
+           name: document.getElementById("playerName").value,
+           photo: photoUrl, 
+           position: document.getElementById("playerPosition").value,
+           flag: flagUrl, 
+           logo: logoUrl, 
+           rating: document.getElementById("playerRating").value, 
+           diving: document.getElementById("playerPace").value,
+           handling:document.getElementById("playerShooting").value, 
+           kicking: document.getElementById("playerPassing").value, 
+           reflexes: document.getElementById("playerDribbling").value,
+           speed: document.getElementById("playerDefending").value,
+           positioning: document.getElementById("playerPhysical").value, 
+      }
+      }
 
       
       let playersFromStorage = JSON.parse(localStorage.getItem("players"));
@@ -95,7 +109,8 @@ async function getData() {
     playerCard.draggable = true;
     playerCard.classList.add('player-out', 'cursor-pointer', 'mb-1', 'bg-[#222322]', 'h-[15%]', 'flex', 'items-center', 'justify-center', 'flex-wrap');
     playerCard.innerHTML = `
-      <h1 class="w-full ml-4 text-white">player: <span class="font-medium text-orange-500">${player.name}<span class="text-white"> |</span> ${player.position}</span></h1>
+    <h1 class="w-full ml-4 text-white">player: <span class="font-medium text-orange-500">${player.name}<span class="text-white"> |</span> ${player.position}</span><button id="${index}"  class="delet">delet</button></h1>
+   
       <div class="w-[60px] h-[60px] ml-1 bg-[#39afca] rounded-full">
         <img class="w-[60px] h-[60px] rounded-full" src="${player.photo}" alt="">
       </div>
@@ -134,7 +149,7 @@ async function getData() {
         <img class="player-country-img w-[50px] h-[40px]" src="${player.logo}" alt="">
       </div>
     `;
-
+     
     playerCard.addEventListener('dragstart', () => {
       
       localStorage.setItem(`sidBarDropedPlayerData`, JSON.stringify(player))     
@@ -148,7 +163,17 @@ async function getData() {
 
     sideBar.appendChild(playerCard);
   });
+
+  let deletBtns = document.querySelectorAll(".delet")
+  deletBtns.forEach((btn)=>{
+    btn.addEventListener("click", (e)=>{
+      allPlayers.splice(Number(e.target.getAttribute("id")), 1)
+      addPlayerToSideBar(allPlayers)      
+    })
+  })
 }
+
+
     
 playersContainerDev.addEventListener('dragstart', (e) => {
   
@@ -194,12 +219,7 @@ playersContainerDev.addEventListener('drop', (e) => {
       const sidebarPlayer = sidebarPlayerData
       
       const existingPlayerHtml = dropTarget.innerHTML;
-      
-      
-      
-      
-      
-      
+
       
       
       dropTarget.innerHTML = createPlayerCard(sidebarPlayer);
@@ -243,6 +263,7 @@ playersContainerDev.addEventListener('drop', (e) => {
 
   document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
   document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+ 
 });
     
 
@@ -328,4 +349,7 @@ function createPlayerCard(player) {
                 </div>
               </div>
       `;
+
+      
 }
+
