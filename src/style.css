@@ -121,8 +121,18 @@ color: #f5deb3;
 width: 20px;
 }
 
+.delet{
+  padding: 4px 6px;
+  background-color: orangered;
+  border-radius: 8px;
+  color: black;
+  float: inline-end;
+  margin-right: 6px;
+}
+
 .side-bar{
   overflow-y: scroll;
+  z-index: 400;
 }
 
 .draging{
@@ -130,8 +140,10 @@ width: 20px;
 }
 
 
-@media(max-width: 1068px){
-
+@media(max-width: 1300px){
+  .side-bar{
+    /* display: none; */
+  }
 
 }
 @media(max-width: 500px){
