@@ -42,9 +42,7 @@ body {
   background-color: blue;
 }
 
-.target .player{
-  background-color: red;
-}
+
 .item {
 display: flex;
 align-items: center;
@@ -72,7 +70,7 @@ width: 125px;
 }
 
 .player {
-width: 120px;
+width: 125px;
 height: 150%;
 display: flex;
 align-items: center;
@@ -130,13 +128,28 @@ width: 20px;
   margin-right: 6px;
 }
 
+.edit{
+  padding: 4px 6px;
+  background-color: orangered;
+  border-radius: 8px;
+  color: black;
+  float: inline-end;
+  margin-right: 6px;
+}
+
 .side-bar{
   overflow-y: scroll;
   z-index: 400;
 }
 
-.draging{
-  /* opacity: 0.4; */
+
+
+.player {
+  transition: 0.4s ease all;
+}
+
+.player:hover {
+  transform: translateY(-5px);
 }
 
 
