@@ -162,7 +162,6 @@ editBtns.forEach((btn) => {
 
     showForm(true);
 
-    console.log(playerToEdit);
 
     document.getElementById("playerName").value = playerToEdit.name;
     document.getElementById("playerPosition").value = playerToEdit.position;
@@ -191,7 +190,6 @@ editBtns.forEach((btn) => {
         playerToEdit.logo = URL.createObjectURL(newLogoInput);
       }
 
-      // Update other fields
       playerToEdit.name = document.getElementById("playerName").value;
       playerToEdit.position = document.getElementById("playerPosition").value;
       playerToEdit.rating = document.getElementById("playerRating").value;
@@ -202,13 +200,11 @@ editBtns.forEach((btn) => {
       playerToEdit.defending = document.getElementById("playerDefending").value;
       playerToEdit.physical = document.getElementById("playerPhysical").value;
 
-      // Save updated data to localStorage
       allPlayers[selected] = playerToEdit;
       localStorage.setItem("players", JSON.stringify(allPlayers));
 
       // Update the sidebar
       allPlayers.splice(selected,1)
-      console.log(allPlayers);
       addPlayerToSideBar(allPlayers);
       showForm(false);
     };
@@ -253,7 +249,8 @@ playersContainerDev.addEventListener('dragleave', (e) => {
 playersContainerDev.addEventListener('drop', (e) => {
   
   dropTarget = e.target.closest('.placeholder'); 
-  
+  let match = dropTarget.innerHTML.match(/id="(\d)"/) || "";
+        
   const draggedPlayer = document.querySelector('.dragging');
 
   const isPitchPlayer = JSON.parse(localStorage.getItem('is-pitch-player'))
@@ -267,25 +264,27 @@ playersContainerDev.addEventListener('drop', (e) => {
 
       
       
-      dropTarget.innerHTML = createPlayerCard(sidebarPlayer);
       
       if (existingPlayerHtml) {
-        console.log("pitch");
+        dropTarget.innerHTML = createPlayerCard(sidebarPlayer, match[1]);
         
-        const match = dropTarget.innerHTML.match(/id="(\d)"/);
-        let temp = boardPLayers[Number(match[1])-1]
-          boardPLayers[Number(match[1])-1] = allPlayers[sidebarPlayerData.index]
-          allPlayers[sidebarPlayerData.index] = temp
-          
-          addPlayerToSideBar(allPlayers)
-          
+        let temp = boardPLayers[Number(match[1])]
+        
+        
+        boardPLayers[Number(match[1])] = allPlayers[sidebarPlayerData.index]
+        console.log(Number(match[1]));
+        
+        allPlayers[sidebarPlayerData.index] = temp
+        // console.log(allPlayers);
+        
+        addPlayerToSideBar(allPlayers, match)
+        
       } else {
         
+        dropTarget.innerHTML = createPlayerCard(sidebarPlayer);
         const draggedSidebarPlayer = document.querySelector('.player-out.dragging');
         if (draggedSidebarPlayer) {
-          console.log("side");
-          
-          console.log(boardPLayers);
+            
           
           boardPLayers.push(allPlayers[sidebarPlayerData.index])
           allPlayers.splice(sidebarPlayerData.index,1)
@@ -317,14 +316,15 @@ playersContainerDev.addEventListener('drop', (e) => {
 
 getData();
 
-function createPlayerCard(player) {
+function createPlayerCard(player, id) {
+  
   if (player.position == "GK") {
     isGoalKeeper = true;
   } else {
     isGoalKeeper = false;
   }
   return `
-    <div draggable="true"  class="player" id=${boardPLayers.length?boardPLayers.length : 0}>
+    <div draggable="true"  class="player" id=${id?id:boardPLayers.length||0}>
                 <div class="player-infos flex flex-col items-center">
                   <div class="flex justify-start ml-2 ">
                     <span class="stat-label mt-1 ml-[-3px]  font-light text-[#f5deb3]">
@@ -394,7 +394,5 @@ function createPlayerCard(player) {
                 </div>
               </div>
       `;
-
-      
 }
 
