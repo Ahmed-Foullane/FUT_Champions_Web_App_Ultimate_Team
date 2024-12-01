@@ -88,6 +88,7 @@ async function getData() {
     player.index = index
 
     playerCard.draggable = true;
+    playerCard.setAttribute("id", index)
     playerCard.classList.add('player-out', 'cursor-pointer', 'mb-1', 'bg-[#222322]', 'h-[15%]', 'flex', 'items-center', 'justify-center', 'flex-wrap');
     playerCard.innerHTML = `
     <h1 class="w-full ml-4 text-white">player: <span class="font-medium text-orange-500">${player.name}<span class="text-white"> |</span> ${player.position}</span><button id="${index}"  class="edit">edit</button><button id="${index}"  class="delet">delet</button></h1>
@@ -132,10 +133,12 @@ async function getData() {
     `;
      
     playerCard.addEventListener('dragstart', () => {
+     
       
+      localStorage.setItem("is-pitch-player", JSON.stringify(false));  
       localStorage.setItem(`sidBarDropedPlayerData`, JSON.stringify(player))     
-      
       playerCard.classList.add('dragging');
+     
     });
 
     playerCard.addEventListener('dragend', (e) => {
@@ -203,7 +206,6 @@ editBtns.forEach((btn) => {
       allPlayers[selected] = playerToEdit;
       localStorage.setItem("players", JSON.stringify(allPlayers));
 
-      // Update the sidebar
       allPlayers.splice(selected,1)
       addPlayerToSideBar(allPlayers);
       showForm(false);
@@ -215,7 +217,7 @@ editBtns.forEach((btn) => {
 }
 
 
-    
+
 playersContainerDev.addEventListener('dragstart', (e) => {
   
   const player = e.target.closest('.player');
@@ -230,18 +232,13 @@ playersContainerDev.addEventListener('dragover', (e) => {
   let dropTarget = e.target.closest('.placeholder');
   
   if (dropTarget) {
-    
     dropTarget.classList.add('drag-over');
-    
-
   }
 });
 
 playersContainerDev.addEventListener('dragleave', (e) => {
   dropTarget = e.target.closest('.placeholder');
   if (dropTarget) {
-    
-    
      dropTarget.classList.remove('drag-over')
    }
 });
@@ -250,20 +247,21 @@ playersContainerDev.addEventListener('drop', (e) => {
   
   dropTarget = e.target.closest('.placeholder'); 
   let match = dropTarget.innerHTML.match(/id="(\d)"/) || "";
+ 
         
   const draggedPlayer = document.querySelector('.dragging');
 
   const isPitchPlayer = JSON.parse(localStorage.getItem('is-pitch-player'))
   localStorage.setItem("is-pitch-player", JSON.stringify(false))  
   const sidebarPlayerData = JSON.parse(localStorage.getItem("sidBarDropedPlayerData"));
+ 
 
+  
   if (!isPitchPlayer && sidebarPlayerData) {
       const sidebarPlayer = sidebarPlayerData
       
       const existingPlayerHtml = dropTarget.innerHTML;
-
-      
-      
+   
       
       if (existingPlayerHtml) {
         dropTarget.innerHTML = createPlayerCard(sidebarPlayer, match[1]);
@@ -272,20 +270,15 @@ playersContainerDev.addEventListener('drop', (e) => {
         
         
         boardPLayers[Number(match[1])] = allPlayers[sidebarPlayerData.index]
-        console.log(Number(match[1]));
-        
         allPlayers[sidebarPlayerData.index] = temp
-        // console.log(allPlayers);
-        
         addPlayerToSideBar(allPlayers, match)
-        
       } else {
-        
-        dropTarget.innerHTML = createPlayerCard(sidebarPlayer);
         const draggedSidebarPlayer = document.querySelector('.player-out.dragging');
+        
+        const newIndex = boardPLayers.length;
+       
+        dropTarget.innerHTML = createPlayerCard(sidebarPlayer, newIndex);
         if (draggedSidebarPlayer) {
-            
-          
           boardPLayers.push(allPlayers[sidebarPlayerData.index])
           allPlayers.splice(sidebarPlayerData.index,1)
           
@@ -295,11 +288,21 @@ playersContainerDev.addEventListener('drop', (e) => {
     
   } else if (draggedPlayer) {
     // Handle pitch-to-pitch swap
+
     const sourceContainer = draggedPlayer.closest('.placeholder');
-    
+   
     if (sourceContainer !== dropTarget) {
-      
       const targetContent = dropTarget.innerHTML;
+      const sourceId = sourceContainer.querySelector('.player').getAttribute('id');
+      const targetId = dropTarget.querySelector('.player')?.getAttribute('id');
+      
+      // Swap players in boardPlayers array
+      if (targetId !== undefined) {
+        const tempPlayer = boardPLayers[sourceId];
+        boardPLayers[sourceId] = boardPLayers[targetId];
+        boardPLayers[targetId] = tempPlayer;
+      }
+      
       dropTarget.innerHTML = sourceContainer.innerHTML;
       sourceContainer.innerHTML = targetContent;
     }
@@ -312,6 +315,40 @@ playersContainerDev.addEventListener('drop', (e) => {
     
 
   addPlayerToSideBar(allPlayers);
+
+  
+      // add player from board to sideBar
+      sideBar.addEventListener('dragover', (e) => {
+        e.preventDefault(); // allow dropping
+      });
+      
+      sideBar.addEventListener('drop', (e) => {
+        const draggedPlayer = document.querySelector('.dragging');
+        if (draggedPlayer) {
+          
+          
+          const dropTarget = e.target.closest('.player-out');
+          let indexOfDragedPlayer = Number(draggedPlayer.getAttribute("id"));
+          let indexOfDropOnPlayer = Number(dropTarget.getAttribute("id"))
+          if (draggedPlayer.parentElement != dropTarget.parentElement) {
+            
+            allPlayers.splice(indexOfDropOnPlayer,0,boardPLayers[indexOfDragedPlayer])
+            addPlayerToSideBar(allPlayers)
+            boardPLayers.splice(indexOfDragedPlayer, 1)
+            draggedPlayer.parentElement.innerHTML = ""
+          }else{
+            let indexOfDropedOnSibling = Number(draggedPlayer.getAttribute("id"))
+            let temp = allPlayers[indexOfDropOnPlayer] 
+            allPlayers[indexOfDropOnPlayer]= allPlayers[indexOfDropedOnSibling]
+            allPlayers[indexOfDropedOnSibling] = temp
+            addPlayerToSideBar(allPlayers)
+            
+            
+          }
+            
+        }
+    });
+      // add player from board to sideBar --
 }
 
 getData();
@@ -394,5 +431,9 @@ function createPlayerCard(player, id) {
                 </div>
               </div>
       `;
+
+      
 }
+
+
 

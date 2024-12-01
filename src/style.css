@@ -63,11 +63,11 @@ width: 125px;
 }
 
 /* Reset styles when drag operation ends */
-.item:not(.drag-over) {
+/* .item:not(.drag-over) {
   background-color: transparent;
   border: none;
   transition: all 0.3s ease;
-}
+} */
 
 .player {
 width: 125px;
