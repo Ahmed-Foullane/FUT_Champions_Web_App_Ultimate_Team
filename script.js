@@ -1,9 +1,21 @@
-localStorage.clear()
+// localStorage.clear()
 let sideBar = document.querySelector(".side-bar");
 let form = document.querySelector(".add-new-plaer-form ");
 let isGoalKeeper = false;
 let positionSelect = document.getElementById("playerPosition");
 let playersContainerDev = document.querySelector('.pitch')
+let allPositions = document.querySelectorAll(".position-placeholder")
+let modal = document.querySelector(".alert")
+let modalMessage = document.querySelector(".alert-message")
+let closeModalBtn = document.querySelector(".closebtn")
+
+
+closeModalBtn.addEventListener("click", ()=>{
+  modal.style.top = "-200px"
+})
+
+
+
 let boardPLayers = []
 function showForm(show) {
   show ? (form.style.display = "flex") : (form.style.display = "none");
@@ -100,6 +112,10 @@ async function getData() {
       <button onclick="showForm(true)" class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Add Player
         </button>
+        <div class="position-toggle">
+    <label>Show positions</label>
+    <input checked="true"  onclick="showPositions(this.checked)" type="checkbox">
+</div>
         </div>
         `;
 
@@ -171,6 +187,8 @@ async function getData() {
     sideBar.appendChild(playerCard);
   });
 
+ 
+ 
   let deletBtns = document.querySelectorAll(".delet")
   deletBtns.forEach((btn)=>{
     btn.addEventListener("click", (e)=>{
@@ -280,10 +298,10 @@ playersContainerDev.addEventListener('drop', (e) => {
   const sidebarPlayerData = JSON.parse(localStorage.getItem("sidBarDropedPlayerData"));
   
   
-  if (sidebarPlayerData.position == dropTarget.getAttribute("id") && boardPLayers.length < 11) {
-    
-    
-    if (!isPitchPlayer && sidebarPlayerData) {
+  
+  
+  if (!isPitchPlayer && sidebarPlayerData) {
+      if (sidebarPlayerData.position == dropTarget.getAttribute("id")) {
       const sidebarPlayer = sidebarPlayerData
       
       const existingPlayerHtml = dropTarget.innerHTML;
@@ -300,28 +318,53 @@ playersContainerDev.addEventListener('drop', (e) => {
         addPlayerToSideBar(allPlayers, match)
       } else {
         const draggedSidebarPlayer = document.querySelector('.player-out.dragging');
-        
-        const newIndex = boardPLayers.length;
-        
-        dropTarget.innerHTML = createPlayerCard(sidebarPlayer, newIndex);
-        if (draggedSidebarPlayer) {
-          boardPLayers.push(allPlayers[sidebarPlayerData.index])
-          allPlayers.splice(sidebarPlayerData.index,1)
+        if ( boardPLayers.length < 11) {
+          const newIndex = boardPLayers.length;
           
-          addPlayerToSideBar(allPlayers)
-        } 
+          dropTarget.innerHTML = createPlayerCard(sidebarPlayer, newIndex);
+          if (draggedSidebarPlayer) {
+            boardPLayers.push(allPlayers[sidebarPlayerData.index])
+            allPlayers.splice(sidebarPlayerData.index,1)
+            
+            addPlayerToSideBar(allPlayers)
+          } 
+        }else{
+          //here
+          modal.style.top = "2%"
+             modalMessage.innerHTML = "you can only add 11 players"
+          setTimeout(() => {
+         
+            modal.style.top = "-200px"
+          }, 2000);
+        }
       }
       
-    } else if (draggedPlayer) {
+    }else{
+      //here
+      modal.style.top = "2%"
+         modalMessage.innerHTML = "it's not the same position"
+      setTimeout(() => {
+     
+        modal.style.top = "-200px"
+      }, 2000);
+    }
+    }  else if (draggedPlayer) {
       // Handle pitch-to-pitch swap
       const sourceContainer = draggedPlayer.closest('.placeholder');
       const targetContent = dropTarget.innerHTML;
       if (sourceContainer.getAttribute("id") == dropTarget.getAttribute("id")) {
         dropTarget.innerHTML = sourceContainer.innerHTML;
         sourceContainer.innerHTML = targetContent;
+      }else{
+        //here
+        modal.style.top = "2%"
+           modalMessage.innerHTML = "it's not the same position"
+        setTimeout(() => {
+       
+          modal.style.top = "-200px"
+        }, 2000);
       }
   }
-}
 
   document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
   document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
@@ -449,7 +492,16 @@ function createPlayerCard(player, id) {
       `;
 
       
-}
-
-
-
+      
+    }
+    
+    
+    function showPositions(isChecked){
+     if (isChecked) {
+       allPositions.forEach((p)=> p.style.display = "flex")
+      }else{
+        
+        allPositions.forEach((p)=> p.style.display = "none")
+     }
+      
+    }
