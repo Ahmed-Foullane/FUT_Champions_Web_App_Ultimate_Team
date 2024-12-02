@@ -25,10 +25,17 @@
               </label>
               <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPosition" required>
                   <option value="">Select Position</option>
-                  <option value="GK">Goalkeeper</option>
-                  <option value="ATT">Defender</option>
-                  <option value="ATT">Midfielder</option>
-                  <option value="ATT">Forward</option>
+                  <option value="GK">GK</option>
+                  <option value="LB">LB</option>
+                  <option value="RB">RB</option>
+                  <option value="CB">CB</option>
+                  <option value="LM">LM</option>
+                  <option value="RM">RM</option>
+                  <option value="CDM">CDM</option>
+                  <option value="CM">CM</option>
+                  <option value="ST">ST</option>
+                  <option value="LW">LW</option>
+                  <option value="RW">RW</option>
               </select>
           </div>
 
@@ -37,37 +44,37 @@
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPace">
                       Pace/Diving
                   </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPace" type="number" min="1" max="99" required>
+                  <input class="Pace-or-Diving shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPace" type="number" min="1" max="99" required>
               </div>
               <div id="shootingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerShooting">
                       Shooting/Handling
                   </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerShooting" type="number" min="1" max="99" required>
+                  <input class="Shooting-or-Handling shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerShooting" type="number" min="1" max="99" required>
               </div>
               <div id="passingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPassing">
                       Passing/Kicking
                   </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPassing" type="number" min="1" max="99" required>
+                  <input class="Passing-or-Kicking shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPassing" type="number" min="1" max="99" required>
               </div>
               <div id="dribblingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerDribbling">
                       Dribbling/Reflexes
                   </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDribbling" type="number" min="1" max="99" required>
+                  <input class="Dribbling-or-Reflexes shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDribbling" type="number" min="1" max="99" required>
               </div>
               <div id="defendingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerDefending">
                       Defending/Speed
                   </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDefending" type="number" min="1" max="99" required>
+                  <input class="Defending-or-Speed shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDefending" type="number" min="1" max="99" required>
               </div>
               <div id="physicalContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPhysical">
                       Physical/Positioning
                   </label>
-                  <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPhysical" type="number" min="1" max="99" required>
+                  <input class="Physical-or-Positioning shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPhysical" type="number" min="1" max="99" required>
               </div>
           </div>
 
@@ -126,33 +133,113 @@
                   <div class="item item5 h-[100%]"></div>
                 </div>
             <div class="element d h-[20%] flex gap-1">
-              <div class="item item1 placeholder h-[100%]"></div>
-              <div class="item item2 placeholder h-[100%]"></div>
-              <div class="item item3 placeholder h-[100%]"></div>
-              <div class="item item4 placeholder h-[100%]"></div>
-              <div class="item item5 placeholder h-[100%]"></div>
+              <div>
+                  <div id="LW" class="item item1 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="ST" class="item item2 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="ST" class="item item3 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="ST" class="item item4 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="RW" class="item item5 placeholder h-[100%]"></div>
+                    
+              </div>
+              
             </div>
             
             <div class="element c h-[20%] flex gap-1">
-              <div class="item item1 placeholder h-[100%]"></div>
-              <div class="item item2 placeholder h-[100%]"></div>
-              <div class="item item3 placeholder h-[100%]"></div>
-              <div class="item item4 placeholder h-[100%]"></div>
-              <div class="item item5 placeholder h-[100%]"></div>
+              <div>
+                  <div id="LM" class="item item1 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="CDM" class="item item2 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="CM" class="item item3 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="CDM" class="item item4 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="RM" class="item item5 placeholder h-[100%]"></div>
+                    
+              </div>
+              
             </div>
             <div class="element b h-[20%] flex gap-1">
-              <div class="item item1 placeholder h-[100%]"></div>
-              <div class="item item2 placeholder h-[100%]"></div>
-              <div class="item item3 placeholder h-[100%]"></div>
-              <div class="item item4 placeholder h-[100%]"></div>
-              <div class="item item5 placeholder h-[100%]"></div>
+              <div>
+                  <div id="LB" class="item item1 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="CB" class="item item2 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="CB" class="item item3 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="CB" class="item item4 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="RB" class="item item5 placeholder h-[100%]"></div>
+                    
+              </div>
+              
             </div>
             <div class="element a h-[20%] flex gap-1">
-              <div class="item item1 placeholder h-[100%]"></div>
-              <div class="item item2 placeholder h-[100%]"></div>
-              <div id="a3" class="item item3 placeholder h-[100%]"></div>
-              <div class="item item4 placeholder h-[100%]"></div>
-              <div class="item item5 placeholder h-[100%]"></div>
+              <div>
+                  <div class="item item1 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div class="item item2 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div id="GK" class="item item3 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div class="item item4 placeholder h-[100%]"></div>
+                    
+              </div>
+              
+              <div>
+                  <div class="item item5 placeholder h-[100%]"></div>
+                    
+              </div>
+              
             </div>
             <!-- now taht you knwo youw now how to typw itha ll tn fin -->
           </div>
@@ -164,9 +251,7 @@
             <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " type="submit">
             Add Player
             </button>
-           
-      
-    </div>
+        </div>
     <script src="script.Js">
       
     </script>

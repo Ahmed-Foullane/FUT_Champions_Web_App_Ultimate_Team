@@ -16,23 +16,25 @@ let positionLabels = {
 
 positionSelect.addEventListener("change", () => {
   let position = positionSelect.value;
-  let labels = positionLabels[position];
- 
-  
+  let labels = positionLabels.ATT;
+  if (position == "GK") {
+    labels = positionLabels[position]
+  }
   document.querySelectorAll("#labelPlyaer label").forEach((label, index) => {
     label.innerHTML = labels[index];
   });
 });
 
 async function getData() {
-  let response = await fetch("/players.json");
-  let players = await response.json();
-  players = players.players;
-  if (!localStorage.getItem("players")) {
-    localStorage.setItem("players", JSON.stringify(players));
-  }
-  let allPlayers = JSON.parse(localStorage.getItem("players"));
+  // to do handle filed fetching    
+    let response = await fetch("/players.json");
+    let players = await response.json();
+    players = players.players;
+    if (!localStorage.getItem("players")) {
+      localStorage.setItem("players", JSON.stringify(players));
+    }
   
+  let allPlayers = JSON.parse(localStorage.getItem("players"));
 
 
   document.getElementById("playerForm").addEventListener("submit", function (event) {
@@ -47,26 +49,46 @@ async function getData() {
       let photoUrl = photoInput ? URL.createObjectURL(photoInput) : null;
       let flagUrl = flagInput ? URL.createObjectURL(flagInput) : null;
       let logoUrl = logoInput ? URL.createObjectURL(logoInput) : null;
-      
-       let  playerData = {
+      let playerData = {}
+      if (document.getElementById("playerPosition").value !== "GK") {
+        
+          playerData = {
+           name: document.getElementById("playerName").value,
+           photo: photoUrl, 
+           position: document.getElementById("playerPosition").value,
+           flag: flagUrl, 
+           logo: logoUrl, 
+           rating: document.getElementById("playerRating").value, 
+           pace: document.querySelector(".Pace-or-Diving").value, 
+           shooting: document.querySelector(".Shooting-or-Handling").value, 
+           passing: document.querySelector(".Passing-or-Kicking").value, 
+           dribbling: document.querySelector(".Dribbling-or-Reflexes").value,
+           defending: document.querySelector(".Defending-or-Speed").value,
+           physical: document.querySelector(".Physical-or-Positioning").value, 
+         };
+      }else{
+        playerData = {
           name: document.getElementById("playerName").value,
           photo: photoUrl, 
           position: document.getElementById("playerPosition").value,
           flag: flagUrl, 
           logo: logoUrl, 
           rating: document.getElementById("playerRating").value, 
-          pace: document.getElementById("playerPace").value, 
-          shooting: document.getElementById("playerShooting").value, 
-          passing: document.getElementById("playerPassing").value, 
-          dribbling: document.getElementById("playerDribbling").value,
-          defending: document.getElementById("playerDefending").value,
-          physical: document.getElementById("playerPhysical").value, 
+          diving: document.querySelector(".Pace-or-Diving").value, 
+          handling: document.querySelector(".Shooting-or-Handling").value, 
+          kicking: document.querySelector(".Passing-or-Kicking").value, 
+          reflexes: document.querySelector(".Dribbling-or-Reflexes").value,
+          speed: document.querySelector(".Defending-or-Speed").value,
+          positioning: document.querySelector(".Physical-or-Positioning").value,
         };
+      }
 
       let playersFromStorage = JSON.parse(localStorage.getItem("players"));
       playersFromStorage.push(playerData);
       localStorage.setItem("players", JSON.stringify(playersFromStorage));
-      addPlayerToSideBar(JSON.parse(localStorage.getItem("players")));
+      allPlayers = JSON.parse(localStorage.getItem("players"))
+      addPlayerToSideBar(allPlayers);
+      
       showForm(false);
     });
 
@@ -85,6 +107,7 @@ async function getData() {
     
     const isGoalKeeper = player.position === "GK";
     const playerCard = document.createElement('div');
+    playerCard.setAttribute("position", player.position)
     player.index = index
 
     playerCard.draggable = true;
@@ -244,8 +267,9 @@ playersContainerDev.addEventListener('dragleave', (e) => {
 });
 
 playersContainerDev.addEventListener('drop', (e) => {
-  
+  e.preventDefault()
   dropTarget = e.target.closest('.placeholder'); 
+  
   let match = dropTarget.innerHTML.match(/id="(\d)"/) || "";
  
         
@@ -254,14 +278,16 @@ playersContainerDev.addEventListener('drop', (e) => {
   const isPitchPlayer = JSON.parse(localStorage.getItem('is-pitch-player'))
   localStorage.setItem("is-pitch-player", JSON.stringify(false))  
   const sidebarPlayerData = JSON.parse(localStorage.getItem("sidBarDropedPlayerData"));
- 
-
   
-  if (!isPitchPlayer && sidebarPlayerData) {
+  
+  if (sidebarPlayerData.position == dropTarget.getAttribute("id") ) {
+    
+    
+    if (!isPitchPlayer && sidebarPlayerData) {
       const sidebarPlayer = sidebarPlayerData
       
       const existingPlayerHtml = dropTarget.innerHTML;
-   
+      
       
       if (existingPlayerHtml) {
         dropTarget.innerHTML = createPlayerCard(sidebarPlayer, match[1]);
@@ -276,7 +302,7 @@ playersContainerDev.addEventListener('drop', (e) => {
         const draggedSidebarPlayer = document.querySelector('.player-out.dragging');
         
         const newIndex = boardPLayers.length;
-       
+        
         dropTarget.innerHTML = createPlayerCard(sidebarPlayer, newIndex);
         if (draggedSidebarPlayer) {
           boardPLayers.push(allPlayers[sidebarPlayerData.index])
@@ -285,28 +311,17 @@ playersContainerDev.addEventListener('drop', (e) => {
           addPlayerToSideBar(allPlayers)
         } 
       }
-    
-  } else if (draggedPlayer) {
-    // Handle pitch-to-pitch swap
-
-    const sourceContainer = draggedPlayer.closest('.placeholder');
-   
-    if (sourceContainer !== dropTarget) {
+      
+    } else if (draggedPlayer) {
+      // Handle pitch-to-pitch swap
+      const sourceContainer = draggedPlayer.closest('.placeholder');
       const targetContent = dropTarget.innerHTML;
-      const sourceId = sourceContainer.querySelector('.player').getAttribute('id');
-      const targetId = dropTarget.querySelector('.player')?.getAttribute('id');
-      
-      // Swap players in boardPlayers array
-      if (targetId !== undefined) {
-        const tempPlayer = boardPLayers[sourceId];
-        boardPLayers[sourceId] = boardPLayers[targetId];
-        boardPLayers[targetId] = tempPlayer;
+      if (sourceContainer.getAttribute("id") == dropTarget.getAttribute("id")) {
+        dropTarget.innerHTML = sourceContainer.innerHTML;
+        sourceContainer.innerHTML = targetContent;
       }
-      
-      dropTarget.innerHTML = sourceContainer.innerHTML;
-      sourceContainer.innerHTML = targetContent;
-    }
   }
+}
 
   document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
   document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
@@ -323,6 +338,7 @@ playersContainerDev.addEventListener('drop', (e) => {
       });
       
       sideBar.addEventListener('drop', (e) => {
+        e.preventDefault()
         const draggedPlayer = document.querySelector('.dragging');
         if (draggedPlayer) {
           

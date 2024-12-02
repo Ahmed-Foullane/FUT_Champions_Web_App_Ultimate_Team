@@ -63,11 +63,11 @@ width: 125px;
 }
 
 /* Reset styles when drag operation ends */
-/* .item:not(.drag-over) {
+.item:not(.drag-over) {
   background-color: transparent;
   border: none;
   transition: all 0.3s ease;
-} */
+}
 
 .player {
 width: 125px;
@@ -81,22 +81,61 @@ background-size: cover;
 z-index: 199;
 }
 
-.element.a .player{
-margin-top: -35px;
 
+.element.d {
+  transform: translateY(-85px);
 }
-.element.b .player{
-margin-top: -55px;
+.element.c {
+  transform: translateY(-55px);
+}
 
+.element.b .item1 .player{
+margin-top: -140px;
 }
-.element.c .player{
-margin-top: -145px;
+.element.b .item2 .player{
+margin-top: -120px;
+}
+.element.b .item3 .player{
+margin-top: -90px;
+}
+.element.b .item4 .player{
+margin-top: -120px;
+}
+.element.b .item5 .player{
+margin-top: -140px;
+}
+.element.c .item1 .player{
+margin-top: -140px;
+}
+.element.c .item2 .player{
+margin-top: -120px;
+}
+.element.c .item3 .player{
+margin-top: -90px;
+}
+.element.c .item4 .player{
+margin-top: -120px;
+}
+.element.c .item5 .player{
+margin-top: -140px;
+}
+.element.d .item1 .player{
+margin-top: -140px;
+}
+.element.d .item2 .player{
+margin-top: -120px;
+}
+.element.d .item3 .player{
+margin-top: -90px;
+}
+.element.d .item4 .player{
+margin-top: -120px;
+}
+.element.d .item5 .player{
+margin-top: -140px;
+}
 
-}
-.element.d .player{
-margin-top: -245px;
 
-}
 
 .player-infos{
 display: flex;
