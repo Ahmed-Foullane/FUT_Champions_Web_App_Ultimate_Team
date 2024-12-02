@@ -280,7 +280,7 @@ playersContainerDev.addEventListener('drop', (e) => {
   const sidebarPlayerData = JSON.parse(localStorage.getItem("sidBarDropedPlayerData"));
   
   
-  if (sidebarPlayerData.position == dropTarget.getAttribute("id") ) {
+  if (sidebarPlayerData.position == dropTarget.getAttribute("id") && boardPLayers.length < 11) {
     
     
     if (!isPitchPlayer && sidebarPlayerData) {
