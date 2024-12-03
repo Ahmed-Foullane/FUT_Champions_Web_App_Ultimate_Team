@@ -1,9 +1,21 @@
-localStorage.clear()
+// localStorage.clear()
 let sideBar = document.querySelector(".side-bar");
 let form = document.querySelector(".add-new-plaer-form ");
 let isGoalKeeper = false;
 let positionSelect = document.getElementById("playerPosition");
 let playersContainerDev = document.querySelector('.pitch')
+let allPositions = document.querySelectorAll(".position-placeholder")
+let modal = document.querySelector(".alert")
+let modalMessage = document.querySelector(".alert-message")
+let closeModalBtn = document.querySelector(".closebtn")
+
+
+closeModalBtn.addEventListener("click", ()=>{
+  modal.style.top = "-200px"
+})
+
+
+
 let boardPLayers = []
 function showForm(show) {
   show ? (form.style.display = "flex") : (form.style.display = "none");
@@ -16,23 +28,25 @@ let positionLabels = {
 
 positionSelect.addEventListener("change", () => {
   let position = positionSelect.value;
-  let labels = positionLabels[position];
- 
-  
+  let labels = positionLabels.ATT;
+  if (position == "GK") {
+    labels = positionLabels[position]
+  }
   document.querySelectorAll("#labelPlyaer label").forEach((label, index) => {
     label.innerHTML = labels[index];
   });
 });
 
 async function getData() {
-  let response = await fetch("/players.json");
-  let players = await response.json();
-  players = players.players;
-  if (!localStorage.getItem("players")) {
-    localStorage.setItem("players", JSON.stringify(players));
-  }
-  let allPlayers = JSON.parse(localStorage.getItem("players"));
+  // to do handle filed fetching    
+    let response = await fetch("/players.json");
+    let players = await response.json();
+    players = players.players;
+    if (!localStorage.getItem("players")) {
+      localStorage.setItem("players", JSON.stringify(players));
+    }
   
+  let allPlayers = JSON.parse(localStorage.getItem("players"));
 
 
   document.getElementById("playerForm").addEventListener("submit", function (event) {
@@ -47,26 +61,46 @@ async function getData() {
       let photoUrl = photoInput ? URL.createObjectURL(photoInput) : null;
       let flagUrl = flagInput ? URL.createObjectURL(flagInput) : null;
       let logoUrl = logoInput ? URL.createObjectURL(logoInput) : null;
-      
-       let  playerData = {
+      let playerData = {}
+      if (document.getElementById("playerPosition").value !== "GK") {
+        
+          playerData = {
+           name: document.getElementById("playerName").value,
+           photo: photoUrl, 
+           position: document.getElementById("playerPosition").value,
+           flag: flagUrl, 
+           logo: logoUrl, 
+           rating: document.getElementById("playerRating").value, 
+           pace: document.querySelector(".Pace-or-Diving").value, 
+           shooting: document.querySelector(".Shooting-or-Handling").value, 
+           passing: document.querySelector(".Passing-or-Kicking").value, 
+           dribbling: document.querySelector(".Dribbling-or-Reflexes").value,
+           defending: document.querySelector(".Defending-or-Speed").value,
+           physical: document.querySelector(".Physical-or-Positioning").value, 
+         };
+      }else{
+        playerData = {
           name: document.getElementById("playerName").value,
           photo: photoUrl, 
           position: document.getElementById("playerPosition").value,
           flag: flagUrl, 
           logo: logoUrl, 
           rating: document.getElementById("playerRating").value, 
-          pace: document.getElementById("playerPace").value, 
-          shooting: document.getElementById("playerShooting").value, 
-          passing: document.getElementById("playerPassing").value, 
-          dribbling: document.getElementById("playerDribbling").value,
-          defending: document.getElementById("playerDefending").value,
-          physical: document.getElementById("playerPhysical").value, 
+          diving: document.querySelector(".Pace-or-Diving").value, 
+          handling: document.querySelector(".Shooting-or-Handling").value, 
+          kicking: document.querySelector(".Passing-or-Kicking").value, 
+          reflexes: document.querySelector(".Dribbling-or-Reflexes").value,
+          speed: document.querySelector(".Defending-or-Speed").value,
+          positioning: document.querySelector(".Physical-or-Positioning").value,
         };
+      }
 
       let playersFromStorage = JSON.parse(localStorage.getItem("players"));
       playersFromStorage.push(playerData);
       localStorage.setItem("players", JSON.stringify(playersFromStorage));
-      addPlayerToSideBar(JSON.parse(localStorage.getItem("players")));
+      allPlayers = JSON.parse(localStorage.getItem("players"))
+      addPlayerToSideBar(allPlayers);
+      
       showForm(false);
     });
 
@@ -78,6 +112,10 @@ async function getData() {
       <button onclick="showForm(true)" class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Add Player
         </button>
+        <div class="position-toggle">
+    <label>Show positions</label>
+    <input checked="true"  onclick="showPositions(this.checked)" type="checkbox">
+</div>
         </div>
         `;
 
@@ -85,9 +123,11 @@ async function getData() {
     
     const isGoalKeeper = player.position === "GK";
     const playerCard = document.createElement('div');
+    playerCard.setAttribute("position", player.position)
     player.index = index
 
     playerCard.draggable = true;
+    playerCard.setAttribute("id", index)
     playerCard.classList.add('player-out', 'cursor-pointer', 'mb-1', 'bg-[#222322]', 'h-[15%]', 'flex', 'items-center', 'justify-center', 'flex-wrap');
     playerCard.innerHTML = `
     <h1 class="w-full ml-4 text-white">player: <span class="font-medium text-orange-500">${player.name}<span class="text-white"> |</span> ${player.position}</span><button id="${index}"  class="edit">edit</button><button id="${index}"  class="delet">delet</button></h1>
@@ -132,10 +172,12 @@ async function getData() {
     `;
      
     playerCard.addEventListener('dragstart', () => {
+     
       
+      localStorage.setItem("is-pitch-player", JSON.stringify(false));  
       localStorage.setItem(`sidBarDropedPlayerData`, JSON.stringify(player))     
-      
       playerCard.classList.add('dragging');
+     
     });
 
     playerCard.addEventListener('dragend', (e) => {
@@ -145,6 +187,8 @@ async function getData() {
     sideBar.appendChild(playerCard);
   });
 
+ 
+ 
   let deletBtns = document.querySelectorAll(".delet")
   deletBtns.forEach((btn)=>{
     btn.addEventListener("click", (e)=>{
@@ -203,7 +247,6 @@ editBtns.forEach((btn) => {
       allPlayers[selected] = playerToEdit;
       localStorage.setItem("players", JSON.stringify(allPlayers));
 
-      // Update the sidebar
       allPlayers.splice(selected,1)
       addPlayerToSideBar(allPlayers);
       showForm(false);
@@ -215,7 +258,7 @@ editBtns.forEach((btn) => {
 }
 
 
-    
+
 playersContainerDev.addEventListener('dragstart', (e) => {
   
   const player = e.target.closest('.player');
@@ -230,79 +273,104 @@ playersContainerDev.addEventListener('dragover', (e) => {
   let dropTarget = e.target.closest('.placeholder');
   
   if (dropTarget) {
-    
     dropTarget.classList.add('drag-over');
-    
-
   }
 });
 
 playersContainerDev.addEventListener('dragleave', (e) => {
   dropTarget = e.target.closest('.placeholder');
   if (dropTarget) {
-    
-    
      dropTarget.classList.remove('drag-over')
    }
 });
 
 playersContainerDev.addEventListener('drop', (e) => {
-  
+  e.preventDefault()
   dropTarget = e.target.closest('.placeholder'); 
+  
   let match = dropTarget.innerHTML.match(/id="(\d)"/) || "";
+ 
         
   const draggedPlayer = document.querySelector('.dragging');
 
   const isPitchPlayer = JSON.parse(localStorage.getItem('is-pitch-player'))
   localStorage.setItem("is-pitch-player", JSON.stringify(false))  
   const sidebarPlayerData = JSON.parse(localStorage.getItem("sidBarDropedPlayerData"));
-
+  
+  
+  
+  
   if (!isPitchPlayer && sidebarPlayerData) {
+   
+    
+      if (sidebarPlayerData.position == dropTarget.getAttribute("id")) {
       const sidebarPlayer = sidebarPlayerData
       
       const existingPlayerHtml = dropTarget.innerHTML;
-
-      
       
       
       if (existingPlayerHtml) {
+        
         dropTarget.innerHTML = createPlayerCard(sidebarPlayer, match[1]);
         
         let temp = boardPLayers[Number(match[1])]
         
         
         boardPLayers[Number(match[1])] = allPlayers[sidebarPlayerData.index]
-        console.log(Number(match[1]));
-        
         allPlayers[sidebarPlayerData.index] = temp
-        // console.log(allPlayers);
-        
         addPlayerToSideBar(allPlayers, match)
-        
       } else {
-        
-        dropTarget.innerHTML = createPlayerCard(sidebarPlayer);
+
         const draggedSidebarPlayer = document.querySelector('.player-out.dragging');
-        if (draggedSidebarPlayer) {
+        if ( boardPLayers.length < 11) {
+          const newIndex = boardPLayers.length;
+          
+          dropTarget.innerHTML = createPlayerCard(sidebarPlayer, newIndex);
+          if (draggedSidebarPlayer) {
+            boardPLayers.push(allPlayers[sidebarPlayerData.index])
+            allPlayers.splice(sidebarPlayerData.index,1)
+           
             
+            addPlayerToSideBar(allPlayers)
+          } 
+        }else{
           
-          boardPLayers.push(allPlayers[sidebarPlayerData.index])
-          allPlayers.splice(sidebarPlayerData.index,1)
-          
-          addPlayerToSideBar(allPlayers)
-        } 
+          modal.style.top = "2%"
+             modalMessage.innerHTML = "you can only add 11 players"
+          setTimeout(() => {
+         
+            modal.style.top = "-200px"
+          }, 2000);
+        }
       }
-    
-  } else if (draggedPlayer) {
-    // Handle pitch-to-pitch swap
-    const sourceContainer = draggedPlayer.closest('.placeholder');
-    
-    if (sourceContainer !== dropTarget) {
       
-      const targetContent = dropTarget.innerHTML;
-      dropTarget.innerHTML = sourceContainer.innerHTML;
-      sourceContainer.innerHTML = targetContent;
+    }else{
+     
+      modal.style.top = "2%"
+         modalMessage.innerHTML = "it's not the same position"
+      setTimeout(() => {
+     
+        modal.style.top = "-200px"
+      }, 2000);
     }
+    }  else if (draggedPlayer) {
+      // Handle pitch-to-pitch swap
+      
+      
+      const sourceContainer = draggedPlayer.closest('.placeholder');
+      const targetContent = dropTarget.innerHTML;
+      if (sourceContainer.getAttribute("id") == dropTarget.getAttribute("id")) {
+        dropTarget.innerHTML = sourceContainer.innerHTML;
+        sourceContainer.innerHTML = targetContent;
+      }else{
+        
+        modal.style.top = "2%"
+           modalMessage.innerHTML = "it's not the same position"
+        setTimeout(() => {
+       
+          modal.style.top = "-200px"
+        }, 2000);
+      }
   }
 
   document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
@@ -312,6 +380,54 @@ playersContainerDev.addEventListener('drop', (e) => {
     
 
   addPlayerToSideBar(allPlayers);
+
+  
+      // switch players in the sideBare
+      sideBar.addEventListener('dragover', (e) => {
+        e.preventDefault(); // allow dropping
+      });
+      
+      sideBar.addEventListener('drop', (e) => {
+        e.preventDefault()
+        const draggedPlayer = document.querySelector('.dragging');
+        
+        
+        if (draggedPlayer) {
+          
+          const dropTarget = e.target.closest('.player-out');
+          let indexOfDragedPlayer = Number(draggedPlayer.getAttribute("id"));
+          let indexOfDropOnPlayer = Number(dropTarget.getAttribute("id"))
+          if (draggedPlayer.parentElement != dropTarget.parentElement) {
+            // handle switch from pitch to sideBare
+             let allplayersFromTeirran = document.querySelectorAll(".player")
+             let dragedPlayerToSidBare =  Number(draggedPlayer.getAttribute("id"))
+             allplayersFromTeirran.forEach((p)=>{
+              if (Number(p.getAttribute("id"))>dragedPlayerToSidBare) {
+                p.setAttribute("id",`${Number(p.getAttribute("id"))-1}`)
+               
+              }
+              
+            })
+
+            allPlayers.splice(indexOfDropOnPlayer,0,boardPLayers[indexOfDragedPlayer])
+            addPlayerToSideBar(allPlayers)
+            boardPLayers.splice(indexOfDragedPlayer, 1)
+            draggedPlayer.parentElement.innerHTML = ""
+          }else{
+            
+            
+            let indexOfDropedOnSibling = Number(draggedPlayer.getAttribute("id"))
+            let temp = allPlayers[indexOfDropOnPlayer] 
+            allPlayers[indexOfDropOnPlayer]= allPlayers[indexOfDropedOnSibling]
+            allPlayers[indexOfDropedOnSibling] = temp
+            addPlayerToSideBar(allPlayers)
+            
+            
+          }
+            
+        }
+    });
+      // switch players in the sideBare --
 }
 
 getData();
@@ -394,5 +510,18 @@ function createPlayerCard(player, id) {
                 </div>
               </div>
       `;
-}
 
+      
+      
+    }
+    
+    
+    function showPositions(isChecked){
+     if (isChecked) {
+       allPositions.forEach((p)=> p.style.display = "flex")
+      }else{
+        
+        allPositions.forEach((p)=> p.style.display = "none")
+     }
+      
+    }
