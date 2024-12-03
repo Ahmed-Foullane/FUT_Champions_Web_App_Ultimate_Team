@@ -1,10 +1,11 @@
 body {
   margin: 0;
-  height: 100vh;
+  height: 900px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   background-color: #d2d2d2;
+  /* transform: scale(0.8); */
 }
 
 .container {
@@ -19,7 +20,7 @@ body {
 
 .pitch {
   height: 610px;
-  margin-bottom: 100px;
+  /* margin-bottom: 100px; */
 }
 
 .parent{
@@ -31,7 +32,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: 80%;
+  margin-top: 20px;
 }
 
 .dragging{
@@ -215,8 +217,9 @@ width: 20px;
 
 .side-bar{
   overflow-y: scroll;
-  width: 600px;
+  width: 490px;
   z-index: 400;
+ 
 }
 
 
@@ -272,3 +275,5 @@ width: 20px;
 @media(max-width: 500px){
 
 } 
+
+

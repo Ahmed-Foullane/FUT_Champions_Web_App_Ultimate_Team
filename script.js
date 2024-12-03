@@ -301,6 +301,8 @@ playersContainerDev.addEventListener('drop', (e) => {
   
   
   if (!isPitchPlayer && sidebarPlayerData) {
+   
+    
       if (sidebarPlayerData.position == dropTarget.getAttribute("id")) {
       const sidebarPlayer = sidebarPlayerData
       
@@ -308,6 +310,7 @@ playersContainerDev.addEventListener('drop', (e) => {
       
       
       if (existingPlayerHtml) {
+        
         dropTarget.innerHTML = createPlayerCard(sidebarPlayer, match[1]);
         
         let temp = boardPLayers[Number(match[1])]
@@ -317,6 +320,7 @@ playersContainerDev.addEventListener('drop', (e) => {
         allPlayers[sidebarPlayerData.index] = temp
         addPlayerToSideBar(allPlayers, match)
       } else {
+
         const draggedSidebarPlayer = document.querySelector('.player-out.dragging');
         if ( boardPLayers.length < 11) {
           const newIndex = boardPLayers.length;
@@ -325,11 +329,12 @@ playersContainerDev.addEventListener('drop', (e) => {
           if (draggedSidebarPlayer) {
             boardPLayers.push(allPlayers[sidebarPlayerData.index])
             allPlayers.splice(sidebarPlayerData.index,1)
+           
             
             addPlayerToSideBar(allPlayers)
           } 
         }else{
-          //here
+          
           modal.style.top = "2%"
              modalMessage.innerHTML = "you can only add 11 players"
           setTimeout(() => {
@@ -340,7 +345,7 @@ playersContainerDev.addEventListener('drop', (e) => {
       }
       
     }else{
-      //here
+     
       modal.style.top = "2%"
          modalMessage.innerHTML = "it's not the same position"
       setTimeout(() => {
@@ -350,13 +355,15 @@ playersContainerDev.addEventListener('drop', (e) => {
     }
     }  else if (draggedPlayer) {
       // Handle pitch-to-pitch swap
+      
+      
       const sourceContainer = draggedPlayer.closest('.placeholder');
       const targetContent = dropTarget.innerHTML;
       if (sourceContainer.getAttribute("id") == dropTarget.getAttribute("id")) {
         dropTarget.innerHTML = sourceContainer.innerHTML;
         sourceContainer.innerHTML = targetContent;
       }else{
-        //here
+        
         modal.style.top = "2%"
            modalMessage.innerHTML = "it's not the same position"
         setTimeout(() => {
@@ -375,7 +382,7 @@ playersContainerDev.addEventListener('drop', (e) => {
   addPlayerToSideBar(allPlayers);
 
   
-      // add player from board to sideBar
+      // switch players in the sideBare
       sideBar.addEventListener('dragover', (e) => {
         e.preventDefault(); // allow dropping
       });
@@ -383,19 +390,32 @@ playersContainerDev.addEventListener('drop', (e) => {
       sideBar.addEventListener('drop', (e) => {
         e.preventDefault()
         const draggedPlayer = document.querySelector('.dragging');
+        
+        
         if (draggedPlayer) {
-          
           
           const dropTarget = e.target.closest('.player-out');
           let indexOfDragedPlayer = Number(draggedPlayer.getAttribute("id"));
           let indexOfDropOnPlayer = Number(dropTarget.getAttribute("id"))
           if (draggedPlayer.parentElement != dropTarget.parentElement) {
-            
+            // handle switch from pitch to sideBare
+             let allplayersFromTeirran = document.querySelectorAll(".player")
+             let dragedPlayerToSidBare =  Number(draggedPlayer.getAttribute("id"))
+             allplayersFromTeirran.forEach((p)=>{
+              if (Number(p.getAttribute("id"))>dragedPlayerToSidBare) {
+                p.setAttribute("id",`${Number(p.getAttribute("id"))-1}`)
+               
+              }
+              
+            })
+
             allPlayers.splice(indexOfDropOnPlayer,0,boardPLayers[indexOfDragedPlayer])
             addPlayerToSideBar(allPlayers)
             boardPLayers.splice(indexOfDragedPlayer, 1)
             draggedPlayer.parentElement.innerHTML = ""
           }else{
+            
+            
             let indexOfDropedOnSibling = Number(draggedPlayer.getAttribute("id"))
             let temp = allPlayers[indexOfDropOnPlayer] 
             allPlayers[indexOfDropOnPlayer]= allPlayers[indexOfDropedOnSibling]
@@ -407,7 +427,7 @@ playersContainerDev.addEventListener('drop', (e) => {
             
         }
     });
-      // add player from board to sideBar --
+      // switch players in the sideBare --
 }
 
 getData();
