@@ -15,8 +15,10 @@ closeModalBtn.addEventListener("click", () => {
 
 let allPlayers = [];
 let boardPLayers = [];
-function showForm(show) {
-  show ? (form.style.display = "flex") : (form.style.display = "none");
+function showForm(show,add = false) {
+        let addPlayerBtn = document.querySelector(".add-player")
+  show ? form.style.display = "flex" : form.style.display = "none"
+  !add ? addPlayerBtn.innerHTML = "update" : addPlayerBtn.innerHTML = "add"
 }
 
 let positionLabels = {
@@ -103,7 +105,7 @@ async function getData() {
   function addPlayerToSideBar(players) {
     sideBar.innerHTML = `
       <div class="p-4 add-player-contianer"> 
-      <button onclick="showForm(true)" class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      <button onclick="showForm(true,true)" class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Add Player
         </button>
         <div class="position-toggle">
@@ -236,10 +238,14 @@ async function getData() {
     let editBtns = document.querySelectorAll(".edit");
     editBtns.forEach((btn) => {
       btn.addEventListener("click", (e) => {
-        selected = Number(e.target.getAttribute("id"));
+        
+        
+        
+        selected = Number(e.target.parentElement.getAttribute("id") || e.target.getAttribute('id'));
+        console.log(selected);
+        
         let playerToEdit = allPlayers[selected];
-
-        showForm(true);
+        showForm(true,false);
 
         document.getElementById("playerName").value = playerToEdit.name;
         document.getElementById("playerPosition").value = playerToEdit.position;
@@ -247,10 +253,8 @@ async function getData() {
         document.getElementById("playerPace").value = playerToEdit.pace;
         document.getElementById("playerShooting").value = playerToEdit.shooting;
         document.getElementById("playerPassing").value = playerToEdit.passing;
-        document.getElementById("playerDribbling").value =
-          playerToEdit.dribbling;
-        document.getElementById("playerDefending").value =
-          playerToEdit.defending;
+        document.getElementById("playerDribbling").value = playerToEdit.dribbling;
+        document.getElementById("playerDefending").value =playerToEdit.defending;
         document.getElementById("playerPhysical").value = playerToEdit.physical;
 
         document.getElementById("playerForm").onsubmit = function (event) {
@@ -271,28 +275,24 @@ async function getData() {
           }
 
           playerToEdit.name = document.getElementById("playerName").value;
-          playerToEdit.position =
-            document.getElementById("playerPosition").value;
+          playerToEdit.position = document.getElementById("playerPosition").value;
           playerToEdit.rating = document.getElementById("playerRating").value;
           playerToEdit.pace = document.getElementById("playerPace").value;
-          playerToEdit.shooting =
-            document.getElementById("playerShooting").value;
+          playerToEdit.shooting = document.getElementById("playerShooting").value;
           playerToEdit.passing = document.getElementById("playerPassing").value;
-          playerToEdit.dribbling =
-            document.getElementById("playerDribbling").value;
-          playerToEdit.defending =
-            document.getElementById("playerDefending").value;
-          playerToEdit.physical =
-            document.getElementById("playerPhysical").value;
+          playerToEdit.dribbling = document.getElementById("playerDribbling").value;
+          playerToEdit.defending =document.getElementById("playerDefending").value;
+          playerToEdit.physical = document.getElementById("playerPhysical").value;
           allPlayers = JSON.parse(localStorage.getItem("players"));
           allPlayers[selected] = playerToEdit;
-          allPlayers.splice(selected, 1);
+          allPlayers.splice(allPlayers.length-1, 1);
           localStorage.setItem("players", JSON.stringify(allPlayers));
           addPlayerToSideBar(allPlayers);
           showForm(false);
         };
       });
     });
+
   }
 
   playersContainerDev.addEventListener("dragstart", (e) => {
@@ -411,7 +411,7 @@ async function getData() {
 
   // switch players in the sideBare
   sideBar.addEventListener("dragover", (e) => {
-    e.preventDefault(); 
+    e.preventDefault(); // allow dropping
   });
 
   sideBar.addEventListener("drop", (e) => {
