@@ -6,7 +6,7 @@
     <title>Football</title>
     <link rel="stylesheet" href="./src/style.css" />
     <link rel="stylesheet" href="./src/output.css" />
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
     <div class="alert ">
@@ -14,7 +14,6 @@
        <span class="alert-message"></span>
       </div>
     <div style="display: none; z-index: 500;" class="container  add-new-plaer-form h-[600px]  absolute top-[5%] flex flex-col  z-50">
-      <h2 class="text-2xl font-bold ">Add New Player</h2>
       <form id="playerForm" class="bg-white rounded px-8 pt-6  ">
           <div >
               <label class="block text-gray-700 text-sm font-bold mb-2" for="playerName">
@@ -224,7 +223,7 @@
               </div>
               
               <div>
-                  <div class="item item2  h-[100%]"></div>
+                  <div class="item item2  h-[100%] "></div>
               </div>
               
               <div>
@@ -242,16 +241,20 @@
               </div>
               
             </div>
-            <!-- now taht you knwo youw now how to typw itha ll tn fin -->
           </div>
         </div>
       </div>
     </div>
-    <div class="side-bar w-[500px] h-[100%] bg-[#fffafa]">
-        <div class="flex items-center p-4"> 
-            <button onclick="showForm(true)" class=" bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline " type="submit">
-            Add Player
-            </button>    
+    <div class="rse-add-show  "> 
+        <button onclick="showForm(true)" class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">
+          +
+          </button>
+          <div class="position-toggle">
+              <input   onclick="showPositions(this.checked)" type="checkbox">
+              <label>Show positions</label>
+  </div>
+          </div>
+    <div class="side-bar">
         </div>
     <script src="script.Js">
       
