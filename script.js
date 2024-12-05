@@ -1,4 +1,4 @@
-localStorage.clear()   
+localStorage.clear();
 let sideBar = document.querySelector(".side-bar");
 let form = document.querySelector(".add-new-plaer-form ");
 let isGoalKeeper = false;
@@ -8,18 +8,132 @@ let allPositions = document.querySelectorAll(".position-placeholder");
 let modal = document.querySelector(".alert");
 let modalMessage = document.querySelector(".alert-message");
 let closeModalBtn = document.querySelector(".closebtn");
+let addPlayerBtn = document.querySelector(".add-player");
+let updatePlayer = document.querySelector(".update-player");
+//valid Form
+let playerToEdit = ""
+let selected = 0
+function showForm(show, update = false) {
+  show ? form.style.display = "flex" : form.style.display = "none"
+  if (update) {
+    addPlayerBtn.style.display = "none"
+    updatePlayer.style.display = "block"
+  }else{
+    addPlayerBtn.style.display = "block"
+    updatePlayer.style.display = "none"
+  }
+  
+}
+const allFormInofs = document.getElementById("playerForm");
+
+function showAlertMessageForm(message, isSuccess = false) {
+  const modal = document.querySelector(".alert");
+  const modalMessage = document.querySelector(".alert-message");
+  
+  modal.style.backgroundColor = isSuccess ? "green" : "red";
+  modalMessage.innerHTML = message;
+  modal.style.top = "2%";
+  
+  setTimeout(() => {
+    modal.style.top = "-200px";
+  }, 2000);
+}
+
+function validTheForm() {
+
+  
+    const name = document.getElementById("playerName").value.trim();
+    const position = document.getElementById("playerPosition").value;
+    const rating = document.getElementById("playerRating").value;
+    const photo = document.getElementById("playerPhoto").files[0];
+  
+    if (name === "") {
+      
+      showAlertMessageForm("Please enter player name")
+      return false;
+    }
+  
+    if (position === "") {
+      showAlertMessageForm("Please select a position");
+      
+      return false;
+    }
+  
+    if (rating < 1 || rating > 99 || rating === "") {
+      showAlertMessageForm("Rating must be between 1 and 99");
+      
+      return false;
+    }
+  
+    if (!photo) {
+      showAlertMessageForm("Please upload a player photo");
+      
+      return false;
+    }
+  
+    const numberInputs = [
+      "playerPace",
+      "playerShooting",
+      "playerPassing",
+      "playerDribbling",
+      "playerDefending",
+      "playerPhysical",
+    ];
+  
+    for (let inputId of numberInputs) {
+      const value = document.getElementById(inputId).value;
+      if (value < 1 || value > 99 || value === "") {
+        showAlertMessageForm("All stats must be between 1 and 99");
+        
+        return false;
+      }
+    }
+  
+    showAlertMessageForm("player added successfully!",true);
+    return true
+ 
+  
+}
+
+
+
+document.getElementById("playerPosition").addEventListener("change", function () {
+    if (this.value === "GK") {
+      document.querySelector('label[for="playerPace"]').textContent = "Diving";
+      document.querySelector('label[for="playerShooting"]').textContent =
+        "Handling";
+      document.querySelector('label[for="playerPassing"]').textContent =
+        "Kicking";
+      document.querySelector('label[for="playerDribbling"]').textContent =
+        "Reflexes";
+      document.querySelector('label[for="playerDefending"]').textContent =
+        "Speed";
+      document.querySelector('label[for="playerPhysical"]').textContent =
+        "Positioning";
+    } else {
+      document.querySelector('label[for="playerPace"]').textContent = "Pace";
+      document.querySelector('label[for="playerShooting"]').textContent =
+        "Shooting";
+      document.querySelector('label[for="playerPassing"]').textContent =
+        "Passing";
+      document.querySelector('label[for="playerDribbling"]').textContent =
+        "Dribbling";
+      document.querySelector('label[for="playerDefending"]').textContent =
+        "Defending";
+      document.querySelector('label[for="playerPhysical"]').textContent =
+        "Physical";
+    }
+  });
+//--valid Form--
 
 closeModalBtn.addEventListener("click", () => {
   modal.style.top = "-200px";
 });
 
+
 let allPlayers = [];
 let boardPLayers = [];
-function showForm(show,add = false) {
-        let addPlayerBtn = document.querySelector(".add-player")
-  show ? form.style.display = "flex" : form.style.display = "none"
-  !add ? addPlayerBtn.innerHTML = "update" : addPlayerBtn.innerHTML = "add"
-}
+
 
 let positionLabels = {
   GK: ["Diving", "Handling", "Kicking", "Reflexes", "Speed", "Positioning"],
@@ -37,6 +151,7 @@ positionSelect.addEventListener("change", () => {
   });
 });
 
+
 async function getData() {
   if (localStorage.getItem("players")) {
     allPlayers = JSON.parse(localStorage.getItem("players"));
@@ -47,65 +162,110 @@ async function getData() {
     localStorage.setItem("players", JSON.stringify(allPlayers));
   }
 
+function addPlayer(){
+
+  let photoInput = document.getElementById("playerPhoto").files[0];
+  let flagInput = document.getElementById("playerFlag").files[0];
+  let logoInput = document.getElementById("playerLogo").files[0];
+
+  let photoUrl = photoInput ? URL.createObjectURL(photoInput) : null;
+  let flagUrl = flagInput ? URL.createObjectURL(flagInput) : null;
+  let logoUrl = logoInput ? URL.createObjectURL(logoInput) : null;
+  let playerData = {};
+  if (document.getElementById("playerPosition").value !== "GK") {
+    playerData = {
+      name: document.getElementById("playerName").value,
+      photo: photoUrl,
+      position: document.getElementById("playerPosition").value,
+      flag: flagUrl,
+      logo: logoUrl,
+      rating: document.getElementById("playerRating").value,
+      pace: document.querySelector(".Pace-or-Diving").value,
+      shooting: document.querySelector(".Shooting-or-Handling").value,
+      passing: document.querySelector(".Passing-or-Kicking").value,
+      dribbling: document.querySelector(".Dribbling-or-Reflexes").value,
+      defending: document.querySelector(".Defending-or-Speed").value,
+      physical: document.querySelector(".Physical-or-Positioning").value,
+    };
+  } else {
+    playerData = {
+      name: document.getElementById("playerName").value,
+      photo: photoUrl,
+      position: document.getElementById("playerPosition").value,
+      flag: flagUrl,
+      logo: logoUrl,
+      rating: document.getElementById("playerRating").value,
+      diving: document.querySelector(".Pace-or-Diving").value,
+      handling: document.querySelector(".Shooting-or-Handling").value,
+      kicking: document.querySelector(".Passing-or-Kicking").value,
+      reflexes: document.querySelector(".Dribbling-or-Reflexes").value,
+      speed: document.querySelector(".Defending-or-Speed").value,
+      positioning: document.querySelector(".Physical-or-Positioning").value,
+    };
+  }
+
+  if (validTheForm()) {
+    allPlayers = JSON.parse(localStorage.getItem("players"));
+    allPlayers.unshift(playerData);
+    localStorage.setItem("players", JSON.stringify(allPlayers));
+    addPlayerToSideBar(allPlayers);
+    showForm(false)
+  }
+}
+
+updatePlayer.addEventListener("click", (e)=>{
+  e.preventDefault()
   
+    let newPhotoInput = document.getElementById("playerPhoto").files[0];
+    let newFlagInput = document.getElementById("playerFlag").files[0];
+    let newLogoInput = document.getElementById("playerLogo").files[0];
 
-  document
-    .getElementById("playerForm")
-    .addEventListener("submit", function (event) {
+    if (newPhotoInput) {
+      playerToEdit.photo = URL.createObjectURL(newPhotoInput);
+    }
+    if (newFlagInput) {
+      playerToEdit.flag = URL.createObjectURL(newFlagInput);
+    }
+    if (newLogoInput) {
+      playerToEdit.logo = URL.createObjectURL(newLogoInput);
+    }
+
+    playerToEdit.name = document.getElementById("playerName").value;
+    playerToEdit.position =
+    document.getElementById("playerPosition").value;
+    playerToEdit.rating = document.getElementById("playerRating").value;
+    playerToEdit.pace = document.getElementById("playerPace").value;
+    playerToEdit.shooting =
+    document.getElementById("playerShooting").value;
+    playerToEdit.passing = document.getElementById("playerPassing").value;
+    playerToEdit.dribbling =
+    document.getElementById("playerDribbling").value;
+    playerToEdit.defending =
+    document.getElementById("playerDefending").value;
+   if (validTheForm()) {
+    allPlayers = JSON.parse(localStorage.getItem("players"));
+          allPlayers[selected] = playerToEdit;
+          localStorage.setItem("players", JSON.stringify(allPlayers));
+          addPlayerToSideBar(allPlayers);
+          showForm(false);
+  addPlayerToSideBar(allPlayers);
+
+   }else{
+    showAlertMessageForm("fill all the inputs")
+   }
+  
+})
+
+  addPlayerBtn.addEventListener("click",  (event) => {
       event.preventDefault();
-
-      let photoInput = document.getElementById("playerPhoto").files[0];
-      let flagInput = document.getElementById("playerFlag").files[0];
-      let logoInput = document.getElementById("playerLogo").files[0];
-
-      let photoUrl = photoInput ? URL.createObjectURL(photoInput) : null;
-      let flagUrl = flagInput ? URL.createObjectURL(flagInput) : null;
-      let logoUrl = logoInput ? URL.createObjectURL(logoInput) : null;
-      let playerData = {};
-      if (document.getElementById("playerPosition").value !== "GK") {
-        playerData = {
-          name: document.getElementById("playerName").value,
-          photo: photoUrl,
-          position: document.getElementById("playerPosition").value,
-          flag: flagUrl,
-          logo: logoUrl,
-          rating: document.getElementById("playerRating").value,
-          pace: document.querySelector(".Pace-or-Diving").value,
-          shooting: document.querySelector(".Shooting-or-Handling").value,
-          passing: document.querySelector(".Passing-or-Kicking").value,
-          dribbling: document.querySelector(".Dribbling-or-Reflexes").value,
-          defending: document.querySelector(".Defending-or-Speed").value,
-          physical: document.querySelector(".Physical-or-Positioning").value,
-        };
-      } else {
-        playerData = {
-          name: document.getElementById("playerName").value,
-          photo: photoUrl,
-          position: document.getElementById("playerPosition").value,
-          flag: flagUrl,
-          logo: logoUrl,
-          rating: document.getElementById("playerRating").value,
-          diving: document.querySelector(".Pace-or-Diving").value,
-          handling: document.querySelector(".Shooting-or-Handling").value,
-          kicking: document.querySelector(".Passing-or-Kicking").value,
-          reflexes: document.querySelector(".Dribbling-or-Reflexes").value,
-          speed: document.querySelector(".Defending-or-Speed").value,
-          positioning: document.querySelector(".Physical-or-Positioning").value,
-        };
-      }
-
-      allPlayers = JSON.parse(localStorage.getItem("players"));
-      allPlayers.push(playerData);
-      localStorage.setItem("players", JSON.stringify(allPlayers));
-      addPlayerToSideBar(allPlayers);
-
-      showForm(false);
-    });
+      addPlayer()
+  })
+      ;
 
   function addPlayerToSideBar(players) {
     sideBar.innerHTML = `
       <div class="p-4 add-player-contianer"> 
-      <button onclick="showForm(true,true)" class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      <button onclick="showForm(true)" class="bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
         Add Player
         </button>
         <div class="position-toggle">
@@ -123,18 +283,12 @@ async function getData() {
 
       playerCard.draggable = true;
       playerCard.setAttribute("id", index);
-      playerCard.classList.add(
-        "player-out",
-        "cursor-pointer",
-        "mb-1",
-      );
+      playerCard.classList.add("player-out", "cursor-pointer", "mb-1");
       playerCard.innerHTML = `
        <div class="p-resonsive">
-        <span class="text-white"> ${
-        player.position
-      } </span> 
+        <span class="text-white"> ${player.position} </span> 
         <button class="text-white r-btn delet" id="${index}"> <i class="fa-solid fa-trash"></i></button> 
-        <button class="text-white r-btn edit" id="${index}" ><i class="fa-regular fa-pen-to-square"></i></button> 
+        <button  class="text-white r-btn edit" id="${index}" ><i class="fa-regular fa-pen-to-square"></i></button> 
         </div>
     <h1 class="w-full ml-4 p-name text-white">player: <span class="font-medium text-orange-500">${
       player.name
@@ -150,7 +304,9 @@ async function getData() {
       <div class="plyer-skiles flex w-[50%] justify-between">
         <div class="stat-row flex flex-col">
           <span class="stat-label sid-plyaer-info text-white">Rt</span>
-          <span class="stat-value side-player-value text-yellow-600">${player.rating}</span>
+          <span class="stat-value side-player-value text-yellow-600">${
+            player.rating
+          }</span>
         </div>
         <div class="stat-row flex flex-col">
           <span class="stat-label sid-plyaer-info text-white">${
@@ -237,62 +393,30 @@ async function getData() {
     });
     let editBtns = document.querySelectorAll(".edit");
     editBtns.forEach((btn) => {
+      
       btn.addEventListener("click", (e) => {
+        showForm(true, true)
+        selected = Number(
+          e.target.parentElement.getAttribute("id") ||
+            e.target.getAttribute("id")
+        );
         
-        
-        
-        selected = Number(e.target.parentElement.getAttribute("id") || e.target.getAttribute('id'));
-        console.log(selected);
-        
-        let playerToEdit = allPlayers[selected];
-        showForm(true,false);
-
+         playerToEdit = allPlayers[selected];
         document.getElementById("playerName").value = playerToEdit.name;
         document.getElementById("playerPosition").value = playerToEdit.position;
         document.getElementById("playerRating").value = playerToEdit.rating;
         document.getElementById("playerPace").value = playerToEdit.pace;
         document.getElementById("playerShooting").value = playerToEdit.shooting;
         document.getElementById("playerPassing").value = playerToEdit.passing;
-        document.getElementById("playerDribbling").value = playerToEdit.dribbling;
-        document.getElementById("playerDefending").value =playerToEdit.defending;
+        document.getElementById("playerDribbling").value =
+          playerToEdit.dribbling;
+        document.getElementById("playerDefending").value =
+          playerToEdit.defending;
         document.getElementById("playerPhysical").value = playerToEdit.physical;
 
-        document.getElementById("playerForm").onsubmit = function (event) {
-          event.preventDefault();
-
-          let newPhotoInput = document.getElementById("playerPhoto").files[0];
-          let newFlagInput = document.getElementById("playerFlag").files[0];
-          let newLogoInput = document.getElementById("playerLogo").files[0];
-
-          if (newPhotoInput) {
-            playerToEdit.photo = URL.createObjectURL(newPhotoInput);
-          }
-          if (newFlagInput) {
-            playerToEdit.flag = URL.createObjectURL(newFlagInput);
-          }
-          if (newLogoInput) {
-            playerToEdit.logo = URL.createObjectURL(newLogoInput);
-          }
-
-          playerToEdit.name = document.getElementById("playerName").value;
-          playerToEdit.position = document.getElementById("playerPosition").value;
-          playerToEdit.rating = document.getElementById("playerRating").value;
-          playerToEdit.pace = document.getElementById("playerPace").value;
-          playerToEdit.shooting = document.getElementById("playerShooting").value;
-          playerToEdit.passing = document.getElementById("playerPassing").value;
-          playerToEdit.dribbling = document.getElementById("playerDribbling").value;
-          playerToEdit.defending =document.getElementById("playerDefending").value;
-          playerToEdit.physical = document.getElementById("playerPhysical").value;
-          allPlayers = JSON.parse(localStorage.getItem("players"));
-          allPlayers[selected] = playerToEdit;
-          allPlayers.splice(allPlayers.length-1, 1);
-          localStorage.setItem("players", JSON.stringify(allPlayers));
-          addPlayerToSideBar(allPlayers);
-          showForm(false);
-        };
+        
       });
     });
-
   }
 
   playersContainerDev.addEventListener("dragstart", (e) => {
@@ -369,7 +493,9 @@ async function getData() {
             }
           } else {
             modal.style.top = "2%";
+            modal.style.backgroundColor = "#f44336";
             modalMessage.innerHTML = "you can only add 11 players";
+
             setTimeout(() => {
               modal.style.top = "-200px";
             }, 2000);
@@ -377,6 +503,7 @@ async function getData() {
         }
       } else {
         modal.style.top = "2%";
+        modal.style.backgroundColor = "#f44336";
         modalMessage.innerHTML = "it's not the same position";
         setTimeout(() => {
           modal.style.top = "-200px";
@@ -392,6 +519,7 @@ async function getData() {
         sourceContainer.innerHTML = targetContent;
       } else {
         modal.style.top = "2%";
+        modal.style.backgroundColor = "#f44336";
         modalMessage.innerHTML = "it's not the same position";
         setTimeout(() => {
           modal.style.top = "-200px";
@@ -411,7 +539,7 @@ async function getData() {
 
   // switch players in the sideBare
   sideBar.addEventListener("dragover", (e) => {
-    e.preventDefault(); // allow dropping
+    e.preventDefault(); 
   });
 
   sideBar.addEventListener("drop", (e) => {
@@ -550,5 +678,3 @@ function showPositions(isChecked) {
 }
 
 showPositions(false);
-
-

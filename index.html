@@ -19,14 +19,14 @@
               <label class="block text-gray-700 text-sm font-bold mb-2" for="playerName">
                   Player Name
               </label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerName" type="text" placeholder="Enter player name" required>
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerName" type="text" placeholder="Enter player name" >
           </div>
           
           <div class="mb-4">
               <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPosition">
                   Position
               </label>
-              <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPosition" required>
+              <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPosition" >
                   <option value="">Select Position</option>
                   <option value="GK">GK</option>
                   <option value="LB">LB</option>
@@ -47,37 +47,37 @@
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPace">
                       Pace/Diving
                   </label>
-                  <input class="Pace-or-Diving shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPace" type="number" min="1" max="99" required>
+                  <input class="Pace-or-Diving shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPace" type="number" min="1" max="99" >
               </div>
               <div id="shootingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerShooting">
                       Shooting/Handling
                   </label>
-                  <input class="Shooting-or-Handling shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerShooting" type="number" min="1" max="99" required>
+                  <input class="Shooting-or-Handling shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerShooting" type="number" min="1" max="99" >
               </div>
               <div id="passingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPassing">
                       Passing/Kicking
                   </label>
-                  <input class="Passing-or-Kicking shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPassing" type="number" min="1" max="99" required>
+                  <input class="Passing-or-Kicking shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPassing" type="number" min="1" max="99" >
               </div>
               <div id="dribblingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerDribbling">
                       Dribbling/Reflexes
                   </label>
-                  <input class="Dribbling-or-Reflexes shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDribbling" type="number" min="1" max="99" required>
+                  <input class="Dribbling-or-Reflexes shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDribbling" type="number" min="1" max="99" >
               </div>
               <div id="defendingContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerDefending">
                       Defending/Speed
                   </label>
-                  <input class="Defending-or-Speed shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDefending" type="number" min="1" max="99" required>
+                  <input class="Defending-or-Speed shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerDefending" type="number" min="1" max="99" >
               </div>
               <div id="physicalContainer">
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPhysical">
                       Physical/Positioning
                   </label>
-                  <input class="Physical-or-Positioning shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPhysical" type="number" min="1" max="99" required>
+                  <input class="Physical-or-Positioning shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerPhysical" type="number" min="1" max="99" >
               </div>
           </div>
 
@@ -85,7 +85,7 @@
               <label class="block text-gray-700 text-sm font-bold mb-2" for="playerRating">
                   Overall Rating
               </label>
-              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerRating" type="number" min="1" max="99" required>
+              <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700  focus:outline-none focus:shadow-outline" id="playerRating" type="number" min="1" max="99" >
           </div>
 
           <div class="grid grid-cols-3 gap-4 mb-4">
@@ -105,13 +105,16 @@
                   <label class="block text-gray-700 text-sm font-bold mb-2" for="playerPhoto">
                       Player Photo
                   </label>
-                  <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="playerPhoto" type="file"  required>
+                  <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50" id="playerPhoto" type="file"  >
               </div>
           </div>
 
           <div class="flex items-center  ">
               <button class="add-player bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
                   Add Player
+              </button>
+              <button style="display: none;" class="update-player bg-blue-500 mr-3 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
+                  update
               </button>
               <button onclick="showForm(false)" class="hide-form bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4" type="submit">
                   cancle
